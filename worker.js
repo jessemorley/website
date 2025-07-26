@@ -1,71 +1,34 @@
-// Cloudflare Worker for static site hosting
+// Simple Cloudflare Worker for static site hosting
+import { getAssetFromKV } from '@cloudflare/kv-asset-handler';
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     
-    // Handle root path
-    if (url.pathname === '/') {
-      return new Response(await getAsset('index.html'), {
-        headers: { 'Content-Type': 'text/html' }
-      });
-    }
-    
-    // Handle specific HTML pages
-    if (url.pathname === '/info' || url.pathname === '/info.html') {
-      return new Response(await getAsset('info.html'), {
-        headers: { 'Content-Type': 'text/html' }
-      });
-    }
-    
-    if (url.pathname === '/contact' || url.pathname === '/contact.html') {
-      return new Response(await getAsset('contact.html'), {
-        headers: { 'Content-Type': 'text/html' }
-      });
-    }
-    
-    // Handle static assets
-    const assetPath = url.pathname.slice(1); // Remove leading slash
-    
     try {
-      const asset = await getAsset(assetPath);
-      const contentType = getContentType(assetPath);
+      // Handle clean URLs - redirect /info to /info.html etc
+      if (url.pathname === '/info') {
+        url.pathname = '/info.html';
+      } else if (url.pathname === '/contact') {
+        url.pathname = '/contact.html';
+      }
       
-      return new Response(asset, {
-        headers: { 
-          'Content-Type': contentType,
-          'Cache-Control': 'public, max-age=3600'
+      // Create a new request with the potentially modified URL
+      const modifiedRequest = new Request(url.toString(), request);
+      
+      return await getAssetFromKV(
+        {
+          request: modifiedRequest,
+          waitUntil: ctx.waitUntil.bind(ctx),
+        },
+        {
+          ASSET_NAMESPACE: env.__STATIC_CONTENT,
+          ASSET_MANIFEST: env.__STATIC_CONTENT_MANIFEST,
         }
-      });
-    } catch (error) {
-      // 404 for missing assets
+      );
+    } catch (e) {
+      // If asset not found, return 404
       return new Response('Not Found', { status: 404 });
     }
   }
 };
-
-// Get content type based on file extension
-function getContentType(path) {
-  const ext = path.split('.').pop()?.toLowerCase();
-  
-  const types = {
-    'html': 'text/html',
-    'css': 'text/css',
-    'js': 'application/javascript',
-    'jpg': 'image/jpeg',
-    'jpeg': 'image/jpeg',
-    'png': 'image/png',
-    'webp': 'image/webp',
-    'svg': 'image/svg+xml',
-    'ico': 'image/x-icon',
-    'txt': 'text/plain',
-    'json': 'application/json'
-  };
-  
-  return types[ext] || 'application/octet-stream';
-}
-
-// This function will be automatically handled by Wrangler for static assets
-async function getAsset(path) {
-  // This is a placeholder - Wrangler will replace this with actual asset loading
-  throw new Error(`Asset not found: ${path}`);
-}
