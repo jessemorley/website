@@ -20,7 +20,7 @@ Thumbs.db
 # Log files
 *.log
 
-# Node modules (if using build tools later)
+# Node modules
 node_modules/
 npm-debug.log*
 

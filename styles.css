@@ -1,3 +1,57 @@
+/* CSS Custom Properties */
+:root {
+    /* Colors */
+    --color-white: #fff;
+    --color-black: #000;
+    --color-text: #333;
+    --color-text-light: #666;
+    --color-text-lighter: #555;
+    --color-border: #ddd;
+    --color-border-light: #eee;
+    --color-background: #f8f8f8;
+    
+    /* Typography */
+    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --font-size-base: 1rem;
+    --font-size-small: 0.9rem;
+    --font-size-large: 1.1rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 2rem;
+    --font-size-3xl: 2.5rem;
+    --font-size-4xl: 3rem;
+    --line-height: 1.6;
+    --line-height-relaxed: 1.7;
+    
+    /* Spacing */
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2rem;
+    --space-xl: 3rem;
+    --space-2xl: 4rem;
+    
+    /* Layout */
+    --header-height: 80px;
+    --header-height-tablet: 100px;
+    --max-width: 1200px;
+    --logo-height: 20px;
+    --logo-height-tablet: 40px;
+    
+    /* Breakpoints */
+    --bp-tablet: 768px;
+    --bp-desktop: 1024px;
+    --bp-large: 1200px;
+    
+    /* Transitions */
+    --transition-fast: 0.3s ease;
+    --transition-slow: 0.6s ease;
+    
+    /* Effects */
+    --border-radius: 4px;
+    --border-radius-large: 8px;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
 /* Reset and Base Styles */
 * {
     margin: 0;
@@ -10,10 +64,10 @@ html {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background-color: #fff;
+    font-family: var(--font-family);
+    line-height: var(--line-height);
+    color: var(--color-text);
+    background-color: var(--color-white);
 }
 
 img {
@@ -42,8 +96,8 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
-    max-width: 1200px;
+    padding: var(--space-sm);
+    max-width: var(--max-width);
     margin: 0 auto;
 }
 
@@ -53,18 +107,18 @@ a {
 }
 
 .logo img {
-    height: 20px;
+    height: var(--logo-height);
     width: auto;
 }
 
 .nav {
     display: flex;
-    gap: 2rem;
+    gap: var(--space-lg);
 }
 
 .nav-link {
-    color: #fff;
-    transition: all 0.3s ease;
+    color: var(--color-white);
+    transition: all var(--transition-fast);
     position: relative;
 }
 
@@ -76,17 +130,17 @@ a {
 .nav-link.active::after {
     content: '';
     position: absolute;
-    bottom: -0.5rem;
+    bottom: calc(-1 * var(--space-xs));
     left: 0;
     right: 0;
     height: 2px;
-    background-color: #fff;
+    background-color: var(--color-white);
 }
 
 /* Main Content */
 .main {
     min-height: calc(100vh - 140px);
-    margin-bottom: 60px;
+    margin-bottom: var(--space-xl);
 }
 
 /* Home page specific - no margins for full-width gallery */
@@ -99,7 +153,7 @@ a {
 /* Other pages keep the margin */
 .info-page,
 .contact-page {
-    margin-top: 80px;
+    margin-top: var(--header-height);
 }
 
 /* Home Page - Image Grid */
@@ -122,29 +176,29 @@ a {
 
 /* Info Page */
 .info-page {
-    padding: 2rem 1rem;
+    padding: var(--space-lg) var(--space-sm);
 }
 
 .info-content {
-    max-width: 1200px;
+    max-width: var(--max-width);
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: var(--space-lg);
     align-items: center;
 }
 
 .info-text h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-md);
     font-weight: 700;
 }
 
 .info-text p {
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
-    line-height: 1.7;
-    color: #555;
+    margin-bottom: var(--space-sm);
+    font-size: var(--font-size-large);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-lighter);
 }
 
 .info-image {
@@ -154,96 +208,96 @@ a {
 
 .info-image img {
     max-width: 400px;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow);
 }
 
 /* Contact Page */
 .contact-page {
-    padding: 2rem 1rem;
+    padding: var(--space-lg) var(--space-sm);
 }
 
 .contact-content {
-    max-width: 1200px;
+    max-width: var(--max-width);
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: var(--space-xl);
 }
 
 .contact-info h2,
 .contact-form h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-sm);
     font-weight: 600;
 }
 
 .contact-info p {
-    margin-bottom: 0.5rem;
-    color: #666;
+    margin-bottom: var(--space-xs);
+    color: var(--color-text-light);
 }
 
 .email-link {
-    font-size: 1.1rem;
-    color: #000;
+    font-size: var(--font-size-large);
+    color: var(--color-black);
     font-weight: 500;
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid var(--color-black);
     padding-bottom: 2px;
-    transition: all 0.3s ease;
+    transition: all var(--transition-fast);
 }
 
 .email-link:hover {
-    color: #666;
-    border-bottom-color: #666;
+    color: var(--color-text-light);
+    border-bottom-color: var(--color-text-light);
 }
 
 /* Form Styles */
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-md);
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--space-xs);
     font-weight: 500;
-    color: #333;
+    color: var(--color-text);
 }
 
 .form-group input,
 .form-group textarea {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-base);
+    transition: border-color var(--transition-fast);
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #000;
+    border-color: var(--color-black);
 }
 
 .submit-btn {
-    background-color: #000;
-    color: #fff;
+    background-color: var(--color-black);
+    color: var(--color-white);
     border: none;
-    padding: 0.75rem 2rem;
-    border-radius: 4px;
-    font-size: 1rem;
+    padding: 0.75rem var(--space-lg);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-base);
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color var(--transition-fast);
 }
 
 .submit-btn:hover {
-    background-color: #333;
+    background-color: var(--color-text);
 }
 
 /* Footer */
 .footer {
     background-color: transparent;
-    padding: 1.5rem 1rem;
+    padding: var(--space-md) var(--space-sm);
     mix-blend-mode: difference;
 }
 
@@ -251,26 +305,26 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
+    max-width: var(--max-width);
     margin: 0 auto;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: var(--space-sm);
 }
 
 .copyright {
-    color: #fff;
-    font-size: 0.9rem;
+    color: var(--color-white);
+    font-size: var(--font-size-small);
 }
 
 .social-links {
     display: flex;
-    gap: 1.5rem;
+    gap: var(--space-md);
 }
 
 .social-link {
-    color: #fff;
-    font-size: 0.9rem;
-    transition: opacity 0.3s ease;
+    color: var(--color-white);
+    font-size: var(--font-size-small);
+    transition: opacity var(--transition-fast);
 }
 
 .social-link:hover {
@@ -281,7 +335,7 @@ a {
 .fade-in {
     opacity: 0;
     transform: translateY(20px);
-    transition: all 0.6s ease;
+    transition: all var(--transition-slow);
 }
 
 .fade-in.visible {
@@ -292,7 +346,7 @@ a {
 /* Tablet Styles */
 @media (min-width: 768px) {
     .header-content {
-        padding: 1.5rem 2rem;
+        padding: var(--space-md) var(--space-lg);
     }
     
     .image-grid {
@@ -301,17 +355,17 @@ a {
     
     .info-content {
         grid-template-columns: 1fr 1fr;
-        gap: 4rem;
+        gap: var(--space-2xl);
     }
     
     .contact-content {
         grid-template-columns: 1fr 2fr;
-        gap: 4rem;
+        gap: var(--space-2xl);
     }
     
     .info-page,
     .contact-page {
-        margin-top: 100px;
+        margin-top: var(--header-height-tablet);
     }
 }
 
@@ -322,23 +376,23 @@ a {
     }
     
     .info-text h1 {
-        font-size: 3rem;
+        font-size: var(--font-size-4xl);
     }
     
     .contact-info h2,
     .contact-form h2 {
-        font-size: 2.5rem;
+        font-size: var(--font-size-3xl);
     }
 }
 
 /* Large Desktop */
 @media (min-width: 1200px) {
     .header-content {
-        padding: 1.5rem 0;
+        padding: var(--space-md) 0;
     }
     
     .info-page,
     .contact-page {
-        padding: 4rem 0;
+        padding: var(--space-2xl) 0;
     }
 }
