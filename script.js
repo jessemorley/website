@@ -32,9 +32,6 @@ function generateGallery() {
         imageItem.appendChild(img);
         galleryContainer.appendChild(imageItem);
     });
-    
-    // Re-initialize animations for new gallery items
-    initializeAnimations();
 }
 
 // Load shared header and footer
@@ -60,8 +57,11 @@ async function loadSharedComponents() {
             }
         });
         
-        // Generate gallery after components are loaded
+        // Generate gallery after components are loaded (home page only)
         generateGallery();
+        
+        // Initialize animations for all fade-in elements
+        initializeAnimations();
     } catch (error) {
         console.error('Error loading shared components:', error);
     }
