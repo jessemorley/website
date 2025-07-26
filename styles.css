@@ -68,6 +68,8 @@ body {
     line-height: var(--line-height);
     color: var(--color-text);
     background-color: var(--color-white);
+     height: 100vh;
+     overflow: hidden;
 }
 
 img {
@@ -91,6 +93,8 @@ a {
     z-index: 100;
     mix-blend-mode: difference;
 }
+
+
 
 .header-content {
     display: flex;
@@ -132,6 +136,8 @@ a {
 /* Main Content */
 .main {
     min-height: 100vh;
+    position: relative;
+    z-index: 0;
 }
 
 /* Home page specific - no margins for full-width gallery */
@@ -139,12 +145,6 @@ a {
     margin-top: 0;
     margin-bottom: 0;
     padding-top: 0;
-}
-
-/* Other pages keep the margin */
-.info-page,
-.contact-page {
-    margin-top: var(--header-height);
 }
 
 /* Home Page - Image Grid */
@@ -297,6 +297,8 @@ a {
     z-index: 100;
 }
 
+
+
 .footer-content {
     display: flex;
     justify-content: space-between;
@@ -325,6 +327,33 @@ a {
 
 .social-link:hover {
     opacity: 0.8;
+}
+
+/* Blur overlays */
+.blur-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 180px;
+    backdrop-filter: blur(8px);
+    mask: linear-gradient(to bottom, black 0%, transparent 100%);
+    -webkit-mask: linear-gradient(to bottom, black 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 50;
+}
+
+.blur-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 180px;
+    backdrop-filter: blur(8px);
+    mask: linear-gradient(to top, black 0%, transparent 100%);
+    -webkit-mask: linear-gradient(to top, black 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 50;
 }
 
 /* Animations */

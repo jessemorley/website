@@ -34,50 +34,25 @@ function generateGallery() {
     });
 }
 
-// Load shared header and footer
-async function loadSharedComponents() {
-    try {
-        // Load header
-        const headerResponse = await fetch('header.html');
-        const headerHTML = await headerResponse.text();
-        document.body.insertAdjacentHTML('afterbegin', headerHTML);
-        
-        // Load footer
-        const footerResponse = await fetch('footer.html');
-        const footerHTML = await footerResponse.text();
-        document.body.insertAdjacentHTML('beforeend', footerHTML);
-        
-        // Set active navigation based on current page
-        const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
-        const navLinks = document.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-            const pageName = link.getAttribute('data-page');
-            if (pageName === currentPage) {
-                link.classList.add('active');
-            }
-        });
-        
-        // Generate gallery after components are loaded (home page only)
-        generateGallery();
-        
-        // Initialize animations for all fade-in elements
-        initializeAnimations();
-    } catch (error) {
-        console.error('Error loading shared components:', error);
-    }
+// Initialize everything when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializePage);
+} else {
+    initializePage();
 }
 
-// Load components when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadSharedComponents);
-} else {
-    loadSharedComponents();
+function initializePage() {
+    // Generate gallery
+    generateGallery();
+    
+    // Initialize animations
+    initializeAnimations();
 }
 
 // Animation system
 const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+    threshold: 0,
+    rootMargin: '0px 0px 0px 0px'
 };
 
 const observer = new IntersectionObserver((entries) => {
@@ -99,6 +74,7 @@ function initializeAnimations() {
         observer.observe(el);
     });
 }
+
 
 // Form submission handler
 const form = document.querySelector('form');
