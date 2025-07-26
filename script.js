@@ -46,6 +46,9 @@ if (document.readyState === 'loading') {
 }
 
 function initializePage() {
+    // Set current year
+    setCurrentYear();
+    
     // Generate gallery
     generateGallery();
     
@@ -54,6 +57,14 @@ function initializePage() {
     
     // Initialize scroll-triggered grid movement
     initializeScrollMovement();
+}
+
+// Set current year in copyright
+function setCurrentYear() {
+    const yearElement = document.getElementById('current-year');
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+    }
 }
 
 // Animation system
