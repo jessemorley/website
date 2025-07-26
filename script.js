@@ -1,3 +1,37 @@
+// Load shared header and footer
+async function loadSharedComponents() {
+    try {
+        // Load header
+        const headerResponse = await fetch('header.html');
+        const headerHTML = await headerResponse.text();
+        document.body.insertAdjacentHTML('afterbegin', headerHTML);
+        
+        // Load footer
+        const footerResponse = await fetch('footer.html');
+        const footerHTML = await footerResponse.text();
+        document.body.insertAdjacentHTML('beforeend', footerHTML);
+        
+        // Set active navigation based on current page
+        const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            const pageName = link.getAttribute('data-page');
+            if (pageName === currentPage) {
+                link.classList.add('active');
+            }
+        });
+    } catch (error) {
+        console.error('Error loading shared components:', error);
+    }
+}
+
+// Load components when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadSharedComponents);
+} else {
+    loadSharedComponents();
+}
+
 // Intersection Observer for fade-in animations
 const observerOptions = {
     threshold: 0.1,
@@ -64,28 +98,3 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Header background opacity on scroll
-let ticking = false;
-
-function updateHeader() {
-    const header = document.querySelector('.header');
-    const scrolled = window.pageYOffset;
-    const rate = scrolled * -0.5;
-    
-    if (scrolled > 50) {
-        header.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
-    } else {
-        header.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-    }
-    
-    ticking = false;
-}
-
-function requestTick() {
-    if (!ticking) {
-        requestAnimationFrame(updateHeader);
-        ticking = true;
-    }
-}
-
-window.addEventListener('scroll', requestTick);

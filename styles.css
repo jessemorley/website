@@ -33,10 +33,9 @@ a {
     top: 0;
     left: 0;
     right: 0;
-    background-color: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    background-color: transparent;
     z-index: 100;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    mix-blend-mode: difference;
 }
 
 .header-content {
@@ -64,14 +63,14 @@ a {
 }
 
 .nav-link {
-    color: #666;
-    transition: color 0.3s ease;
+    color: #fff;
+    transition: all 0.3s ease;
     position: relative;
 }
 
 .nav-link:hover,
 .nav-link.active {
-    color: #000;
+    opacity: 0.8;
 }
 
 .nav-link.active::after {
@@ -81,7 +80,7 @@ a {
     left: 0;
     right: 0;
     height: 2px;
-    background-color: #000;
+    background-color: #fff;
 }
 
 /* Main Content */
@@ -94,7 +93,7 @@ a {
 .main:has(.image-grid) {
     margin-top: 0;
     margin-bottom: 0;
-    padding-top: 80px;
+    padding-top: 0;
 }
 
 /* Other pages keep the margin */
@@ -243,9 +242,9 @@ a {
 
 /* Footer */
 .footer {
-    background-color: #f8f8f8;
-    border-top: 1px solid #eee;
+    background-color: transparent;
     padding: 1.5rem 1rem;
+    mix-blend-mode: difference;
 }
 
 .footer-content {
@@ -259,7 +258,7 @@ a {
 }
 
 .copyright {
-    color: #666;
+    color: #fff;
     font-size: 0.9rem;
 }
 
@@ -269,13 +268,13 @@ a {
 }
 
 .social-link {
-    color: #666;
+    color: #fff;
     font-size: 0.9rem;
-    transition: color 0.3s ease;
+    transition: opacity 0.3s ease;
 }
 
 .social-link:hover {
-    color: #000;
+    opacity: 0.8;
 }
 
 /* Animations */
