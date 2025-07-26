@@ -11,7 +11,7 @@ const portfolioImages = [
     { file: 'portfolio-10.jpg', alt: 'Still Life Art' }
 ];
 
-// Generate gallery dynamically
+// Generate gallery dynamically with duplication for infinite scroll
 function generateGallery() {
     const galleryContainer = document.querySelector('.image-grid');
     if (!galleryContainer) return; // Only run on home page
@@ -19,19 +19,23 @@ function generateGallery() {
     // Clear existing content
     galleryContainer.innerHTML = '';
     
-    // Generate gallery items
-    portfolioImages.forEach((image) => {
-        const imageItem = document.createElement('div');
-        imageItem.className = 'image-item fade-in';
-        
-        const img = document.createElement('img');
-        img.src = `./images/porfolio/${image.file}`;
-        img.alt = image.alt;
-        img.loading = 'lazy';
-        
-        imageItem.appendChild(img);
-        galleryContainer.appendChild(imageItem);
-    });
+    // Generate gallery items multiple times for seamless loop
+    const duplicates = 3; // Number of times to duplicate the grid
+    
+    for (let d = 0; d < duplicates; d++) {
+        portfolioImages.forEach((image) => {
+            const imageItem = document.createElement('div');
+            imageItem.className = 'image-item fade-in';
+            
+            const img = document.createElement('img');
+            img.src = `./images/porfolio/${image.file}`;
+            img.alt = image.alt;
+            img.loading = 'lazy';
+            
+            imageItem.appendChild(img);
+            galleryContainer.appendChild(imageItem);
+        });
+    }
 }
 
 // Initialize everything when DOM is ready
@@ -47,6 +51,9 @@ function initializePage() {
     
     // Initialize animations
     initializeAnimations();
+    
+    // Initialize scroll-triggered grid movement
+    initializeScrollMovement();
 }
 
 // Animation system
@@ -73,6 +80,59 @@ function initializeAnimations() {
         }
         observer.observe(el);
     });
+}
+
+// Scroll-triggered grid movement with seamless infinite loop
+function initializeScrollMovement() {
+    const imageGrid = document.querySelector('.image-grid');
+    if (!imageGrid) return;
+    
+    let scrollPosition = 0;
+    let ticking = false;
+    
+    // Wait for images to load to get accurate height
+    setTimeout(() => {
+        const singleSetHeight = imageGrid.scrollHeight / 3; // Divide by number of duplicates
+        
+        function updateGridPosition() {
+            // Reset position seamlessly when we've scrolled through one complete set
+            if (scrollPosition >= singleSetHeight) {
+                scrollPosition = scrollPosition - singleSetHeight;
+            } else if (scrollPosition < 0) {
+                scrollPosition = scrollPosition + singleSetHeight;
+            }
+            
+            imageGrid.style.transform = `translateY(-${scrollPosition}px)`;
+            ticking = false;
+        }
+        
+        function requestTick() {
+            if (!ticking) {
+                requestAnimationFrame(updateGridPosition);
+                ticking = true;
+            }
+        }
+        
+        // Use wheel event since body has overflow hidden
+        window.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            scrollPosition += e.deltaY * 0.5; // Adjust scroll speed
+            requestTick();
+        }, { passive: false });
+        
+        // Also handle keyboard scrolling
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === ' ') {
+                e.preventDefault();
+                scrollPosition += 100;
+                requestTick();
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                scrollPosition -= 100;
+                requestTick();
+            }
+        });
+    }, 500); // Wait for images to load
 }
 
 
