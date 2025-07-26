@@ -24,7 +24,7 @@
     
     /* Spacing */
     --space-xs: 0.5rem;
-    --space-sm: 1rem;
+    --space-sm: 2rem;
     --space-md: 1.5rem;
     --space-lg: 2rem;
     --space-xl: 3rem;
@@ -127,20 +127,10 @@ a {
     opacity: 0.8;
 }
 
-.nav-link.active::after {
-    content: '';
-    position: absolute;
-    bottom: calc(-1 * var(--space-xs));
-    left: 0;
-    right: 0;
-    height: 2px;
-    background-color: var(--color-white);
-}
 
 /* Main Content */
 .main {
-    min-height: calc(100vh - 140px);
-    margin-bottom: var(--space-xl);
+    min-height: 100vh;
 }
 
 /* Home page specific - no margins for full-width gallery */
@@ -296,9 +286,14 @@ a {
 
 /* Footer */
 .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
     background-color: transparent;
     padding: var(--space-md) var(--space-sm);
     mix-blend-mode: difference;
+    z-index: 100;
 }
 
 .footer-content {

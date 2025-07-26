@@ -10,12 +10,15 @@
     <main class="main contact-page">
         <div class="contact-content">
             <div class="contact-info fade-in">
-                <h2>Get in touch</h2>
-                <p>For enquiries, please email:</p>
-                <a href="mailto:hello@example.com" class="email-link">hello@example.com</a>
+                <p>Enquiries:</p>
+                <script language="JavaScript"><!--
+                    var name = "hi";
+                    var domain = "jessemorley.com";
+                    document.write('<a href=\"mailto:' + name + '@' + domain + '\">');
+                    document.write(name + '@' + domain + '</a>');
+                // --></script>
             </div>
             <div class="contact-form fade-in">
-                <h2>Send a message</h2>
                 <form>
                     <div class="form-group">
                         <label for="name">Name</label>
