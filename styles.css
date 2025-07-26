@@ -11,7 +11,7 @@
     --color-background: #f8f8f8;
     
     /* Typography */
-    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --font-family: "neue-haas-grotesk-display", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     --font-size-base: 1rem;
     --font-size-small: 0.9rem;
     --font-size-large: 1.1rem;
@@ -120,6 +120,7 @@ a {
     color: var(--color-white);
     transition: all var(--transition-fast);
     position: relative;
+    font-weight: 600;
 }
 
 .nav-link:hover,

@@ -1,3 +1,42 @@
+// Portfolio Images Configuration
+const portfolioImages = [
+    { file: 'portfolio-04.jpg', alt: 'Portrait Photography' },
+    { file: 'portfolio-01.webp', alt: 'Fashion Photography' },
+    { file: 'portfolio-02.jpg', alt: 'Still Life Photography' },
+    { file: 'portfolio-03.webp', alt: 'Still Life Study' },
+    { file: 'portfolio-05.webp', alt: 'Fashion Editorial' },
+    { file: 'portfolio-06.webp', alt: 'Portrait Session' },
+    { file: 'portfolio-07.webp', alt: 'Fashion Portrait' },
+    { file: 'portfolio-09.jpg', alt: 'Creative Photography' },
+    { file: 'portfolio-10.jpg', alt: 'Still Life Art' }
+];
+
+// Generate gallery dynamically
+function generateGallery() {
+    const galleryContainer = document.querySelector('.image-grid');
+    if (!galleryContainer) return; // Only run on home page
+    
+    // Clear existing content
+    galleryContainer.innerHTML = '';
+    
+    // Generate gallery items
+    portfolioImages.forEach((image) => {
+        const imageItem = document.createElement('div');
+        imageItem.className = 'image-item fade-in';
+        
+        const img = document.createElement('img');
+        img.src = `./images/porfolio/${image.file}`;
+        img.alt = image.alt;
+        img.loading = 'lazy';
+        
+        imageItem.appendChild(img);
+        galleryContainer.appendChild(imageItem);
+    });
+    
+    // Re-initialize animations for new gallery items
+    initializeAnimations();
+}
+
 // Load shared header and footer
 async function loadSharedComponents() {
     try {
@@ -20,6 +59,9 @@ async function loadSharedComponents() {
                 link.classList.add('active');
             }
         });
+        
+        // Generate gallery after components are loaded
+        generateGallery();
     } catch (error) {
         console.error('Error loading shared components:', error);
     }
@@ -32,7 +74,7 @@ if (document.readyState === 'loading') {
     loadSharedComponents();
 }
 
-// Intersection Observer for fade-in animations
+// Animation system
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
@@ -46,8 +88,8 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe all elements with fade-in class
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize animations for fade-in elements
+function initializeAnimations() {
     const fadeElements = document.querySelectorAll('.fade-in');
     fadeElements.forEach((el, index) => {
         // Add staggered delay for grid items
@@ -56,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         observer.observe(el);
     });
-});
+}
 
 // Form submission handler
 const form = document.querySelector('form');
