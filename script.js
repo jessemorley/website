@@ -195,22 +195,56 @@ function initializeScrollMovement() {
             requestTick();
         }, { passive: false });
         
-        // Handle touch events for mobile
+        // Handle touch events for mobile with momentum
         let touchStartY = 0;
         let touchEndY = 0;
+        let touchStartTime = 0;
+        let velocity = 0;
+        let momentumAnimation = null;
         
         window.addEventListener('touchstart', (e) => {
             touchStartY = e.touches[0].clientY;
+            touchStartTime = Date.now();
+            velocity = 0;
+            // Stop any existing momentum
+            if (momentumAnimation) {
+                cancelAnimationFrame(momentumAnimation);
+                momentumAnimation = null;
+            }
         }, { passive: true });
         
         window.addEventListener('touchmove', (e) => {
             e.preventDefault();
             touchEndY = e.touches[0].clientY;
             const deltaY = touchStartY - touchEndY;
+            const deltaTime = Date.now() - touchStartTime;
+            
+            // Calculate velocity
+            if (deltaTime > 0) {
+                velocity = deltaY / deltaTime;
+            }
+            
             scrollPosition += deltaY * 2; // Adjust touch sensitivity
-            touchStartY = touchEndY; // Update for continuous scrolling
+            touchStartY = touchEndY;
+            touchStartTime = Date.now();
             requestTick();
         }, { passive: false });
+        
+        window.addEventListener('touchend', () => {
+            // Apply momentum scrolling
+            if (Math.abs(velocity) > 0.1) {
+                const applyMomentum = () => {
+                    velocity *= 0.95; // Friction factor
+                    scrollPosition += velocity * 16; // Apply velocity (16ms per frame)
+                    requestTick();
+                    
+                    if (Math.abs(velocity) > 0.01) {
+                        momentumAnimation = requestAnimationFrame(applyMomentum);
+                    }
+                };
+                applyMomentum();
+            }
+        }, { passive: true });
         
         // Also handle keyboard scrolling
         window.addEventListener('keydown', (e) => {
