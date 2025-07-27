@@ -52,6 +52,9 @@ function initializePage() {
     // Generate gallery
     generateGallery();
     
+    // Initialize preloader
+    initializePreloader();
+    
     // Initialize animations
     initializeAnimations();
     
@@ -65,6 +68,52 @@ function setCurrentYear() {
     if (yearElement) {
         yearElement.textContent = new Date().getFullYear();
     }
+}
+
+// Preloader functionality
+function initializePreloader() {
+    const preloader = document.querySelector('.preloader');
+    const percentage = document.querySelector('.percentage');
+    const logo = document.querySelector('.preloader-logo');
+    const images = document.querySelectorAll('img');
+    
+    let loadedCount = 0;
+    let totalCount = images.length;
+    
+    // Update percentage display and logo rotation
+    function updatePercentage() {
+        const percent = Math.round((loadedCount / totalCount) * 100);
+        percentage.textContent = `${percent}%`;
+        
+        // Rotate logo based on loading progress (0% = 0°, 100% = 18000°)
+        const rotation = (percent / 100) * 18000;
+        logo.style.transform = `rotate(${rotation}deg)`;
+        
+        if (loadedCount === totalCount) {
+            setTimeout(() => {
+                preloader.classList.add('hidden');
+            }, 500); // Small delay before hiding
+        }
+    }
+    
+    // Track image loading
+    images.forEach(img => {
+        if (img.complete) {
+            loadedCount++;
+        } else {
+            img.addEventListener('load', () => {
+                loadedCount++;
+                updatePercentage();
+            });
+            img.addEventListener('error', () => {
+                loadedCount++;
+                updatePercentage();
+            });
+        }
+    });
+    
+    // Initial percentage update
+    updatePercentage();
 }
 
 // Animation system

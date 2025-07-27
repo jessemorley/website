@@ -329,6 +329,47 @@ a {
     opacity: 0.8;
 }
 
+/* Preloader */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-black);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.preloader-content {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+}
+
+.preloader-logo {
+    width: 40px;
+    height: 40px;
+    filter: brightness(0) saturate(100%) invert(100%);
+    transition: transform 0.1s ease;
+}
+
+.percentage {
+    color: var(--color-white);
+    font-size: var(--font-size-3xl);
+    font-weight: 300;
+    font-family: var(--font-family);
+}
+
 /* Blur overlays */
 .blur-top {
     position: fixed;
