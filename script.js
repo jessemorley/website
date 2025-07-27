@@ -224,7 +224,7 @@ function initializeScrollMovement() {
                 velocity = deltaY / deltaTime;
             }
             
-            scrollPosition += deltaY * 2; // Adjust touch sensitivity
+            scrollPosition += deltaY * 1.2; // Adjust touch sensitivity
             touchStartY = touchEndY;
             touchStartTime = Date.now();
             requestTick();
@@ -232,7 +232,7 @@ function initializeScrollMovement() {
         
         window.addEventListener('touchend', () => {
             // Apply momentum scrolling
-            if (Math.abs(velocity) > 0.1) {
+            if (Math.abs(velocity) > 0.05) {
                 const applyMomentum = () => {
                     velocity *= 0.95; // Friction factor
                     scrollPosition += velocity * 16; // Apply velocity (16ms per frame)
