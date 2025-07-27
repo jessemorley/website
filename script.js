@@ -344,13 +344,14 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Overlay Navigation System
+// Overlay Navigation System with GSAP
 function initializeOverlayNav() {
     const overlay = document.getElementById('pageOverlay');
     const overlayBlur = document.getElementById('overlayBlur');
     const overlayBody = document.getElementById('overlayBody');
     const navLinks = document.querySelectorAll('.nav-link[data-page]');
     let currentActiveLink = null;
+    let overlayTimeline = null;
     
     // Handle navigation link clicks
     navLinks.forEach(link => {
@@ -365,13 +366,10 @@ function initializeOverlayNav() {
             }
             
             // Start overlay transition first
-            showOverlay(link);
-            // Hide content immediately, then load/show after transitions complete
-            overlayBody.style.opacity = '0';
-            setTimeout(async () => {
-                await loadPageContent(page);
-                overlayBody.style.opacity = '1';
-            }, 400); // Wait for 0.8s transition to complete
+            await showOverlay(link);
+            // Load content and animate it in
+            await loadPageContent(page);
+            animateContentIn();
         });
     });
     
@@ -411,31 +409,103 @@ function initializeOverlayNav() {
     }
     
     function showOverlay(activeLink) {
-        // Remove active class from all links
-        navLinks.forEach(link => link.classList.remove('active'));
-        // Add active class to current link
-        activeLink.classList.add('active');
-        currentActiveLink = activeLink;
-        
-        overlayBlur.classList.add('active');
-        overlay.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        return new Promise((resolve) => {
+            // Remove active class from all links
+            navLinks.forEach(link => link.classList.remove('active'));
+            // Add active class to current link
+            activeLink.classList.add('active');
+            currentActiveLink = activeLink;
+            
+            // Kill any existing timeline
+            if (overlayTimeline) overlayTimeline.kill();
+            
+            // Create GSAP timeline for smooth overlay entrance
+            overlayTimeline = gsap.timeline({
+                onComplete: resolve
+            });
+            
+            // Set initial states
+            gsap.set(overlay, { opacity: 0, visibility: 'visible' });
+            gsap.set(overlayBody, { opacity: 0 });
+            
+            // Animate in sequence
+            overlayTimeline
+                .to(overlayBlur, { 
+                    backdropFilter: 'blur(30px)', 
+                    duration: 0.4, 
+                    ease: "power2.out" 
+                })
+                .to(overlay, { 
+                    opacity: 1, 
+                    duration: 0.3, 
+                    ease: "power2.out" 
+                }, "-=0.2")
+                .to(overlay.querySelector('.overlay-content'), {
+                    backgroundColor: 'rgba(255,255,255, .9)',
+                    duration: 0.4,
+                    ease: "power2.out"
+                }, "-=0.3");
+                
+            document.body.style.overflow = 'hidden';
+        });
     }
     
     function hideOverlay() {
-        // Hide content immediately
-        overlayBody.style.opacity = '0';
-        
-        // Remove active class from all links
-        navLinks.forEach(link => link.classList.remove('active'));
-        currentActiveLink = null;
-        
-        // Delay overlay/blur transitions by 0.4s
-        setTimeout(() => {
-            overlay.classList.remove('active');
-            overlayBlur.classList.remove('active');
-            document.body.style.overflow = ''; // Restore scrolling
-        }, 400);
+        return new Promise((resolve) => {
+            // Remove active class from all links
+            navLinks.forEach(link => link.classList.remove('active'));
+            currentActiveLink = null;
+            
+            // Kill any existing timeline
+            if (overlayTimeline) overlayTimeline.kill();
+            
+            // Create GSAP timeline for smooth overlay exit
+            overlayTimeline = gsap.timeline({
+                onComplete: () => {
+                    document.body.style.overflow = '';
+                    resolve();
+                }
+            });
+            
+            // Animate out in reverse sequence
+            overlayTimeline
+                .to(overlayBody, { 
+                    opacity: 0, 
+                    duration: 0.2, 
+                    ease: "power2.in" 
+                })
+                .to(overlay.querySelector('.overlay-content'), {
+                    backgroundColor: 'rgba(255,255,255, 0)',
+                    duration: 0.3,
+                    ease: "power2.in"
+                }, "-=0.1")
+                .to(overlay, { 
+                    opacity: 0, 
+                    duration: 0.3, 
+                    ease: "power2.in" 
+                }, "-=0.2")
+                .to(overlayBlur, { 
+                    backdropFilter: 'blur(0px)', 
+                    duration: 0.4, 
+                    ease: "power2.in" 
+                }, "-=0.3")
+                .set(overlay, { visibility: 'hidden' });
+        });
+    }
+    
+    function animateContentIn() {
+        gsap.fromTo(overlayBody, 
+            { 
+                opacity: 0, 
+                y: 20 
+            },
+            { 
+                opacity: 1, 
+                y: 0, 
+                duration: 0.5, 
+                ease: "power2.out" 
+            }
+        );
     }
 }
 

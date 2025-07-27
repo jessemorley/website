@@ -439,7 +439,6 @@ a {
     z-index: 50;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.2s ease 0.1s, visibility 0.2s ease 0.1s;
 }
 
 .page-overlay.active {
@@ -457,11 +456,6 @@ a {
     z-index: 49;
     opacity: 1;
     visibility: visible;
-    transition: backdrop-filter .8s ease;
-}
-
-.overlay-blur.active {
-    backdrop-filter: blur(30px);
 }
 
 .overlay-backdrop {
@@ -478,11 +472,6 @@ a {
     height: 100%;
     background-color: rgba(255, 255, 255, 0);
     overflow: hidden;
-    transition: background-color 0.8s ease;
-}
-
-.page-overlay.active .overlay-content {
-    background-color: rgba(255,255,255, .9);
 }
 
 
@@ -493,7 +482,6 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.3s ease;
 }
 
 

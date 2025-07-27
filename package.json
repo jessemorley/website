@@ -1,0 +1,17 @@
+{
+  "name": "jesse-morley-photography",
+  "version": "1.0.0",
+  "description": "Photography portfolio website",
+  "main": "script.js",
+  "scripts": {
+    "dev": "wrangler pages dev .",
+    "build": "echo 'Static site - no build needed'",
+    "deploy": "wrangler pages deploy ."
+  },
+  "keywords": [
+    "photography",
+    "portfolio"
+  ],
+  "author": "Jesse Morley",
+  "license": "MIT"
+}
