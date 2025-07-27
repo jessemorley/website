@@ -349,6 +349,22 @@ a {
     visibility: hidden;
 }
 
+.preloader-blur {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(20px);
+    z-index: 9998;
+    transition: opacity 0.8s ease 0.3s, visibility 0.8s ease 0.3s;
+}
+
+.preloader-blur.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
 .preloader-content {
     text-align: center;
     display: flex;
@@ -368,6 +384,8 @@ a {
     font-size: var(--font-size-3xl);
     font-weight: 300;
     font-family: var(--font-family);
+    min-width: 120px;
+    text-align: left;
 }
 
 /* Blur overlays */

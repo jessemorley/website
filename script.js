@@ -73,6 +73,15 @@ function setCurrentYear() {
 // Preloader functionality
 function initializePreloader() {
     const preloader = document.querySelector('.preloader');
+    const preloaderBlur = document.querySelector('.preloader-blur');
+    
+    // Check if page has been loaded before in this session
+    if (sessionStorage.getItem('pageLoaded')) {
+        preloader.classList.add('hidden');
+        preloaderBlur.classList.add('hidden');
+        return;
+    }
+    
     const percentage = document.querySelector('.percentage');
     const logo = document.querySelector('.preloader-logo');
     const images = document.querySelectorAll('img');
@@ -92,6 +101,9 @@ function initializePreloader() {
         if (loadedCount === totalCount) {
             setTimeout(() => {
                 preloader.classList.add('hidden');
+                preloaderBlur.classList.add('hidden');
+                // Mark page as loaded in this session
+                sessionStorage.setItem('pageLoaded', 'true');
             }, 500); // Small delay before hiding
         }
     }
