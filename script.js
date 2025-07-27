@@ -30,7 +30,7 @@ function generateGallery() {
             const img = document.createElement('img');
             img.src = `./images/porfolio/${image.file}`;
             img.alt = image.alt;
-            img.loading = 'lazy';
+            img.loading = 'eager';
             
             imageItem.appendChild(img);
             galleryContainer.appendChild(imageItem);
