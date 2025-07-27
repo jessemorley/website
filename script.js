@@ -347,22 +347,33 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // Overlay Navigation System
 function initializeOverlayNav() {
     const overlay = document.getElementById('pageOverlay');
+    const overlayBlur = document.getElementById('overlayBlur');
     const overlayBody = document.getElementById('overlayBody');
-    const closeBtn = document.getElementById('overlayClose');
     const navLinks = document.querySelectorAll('.nav-link[data-page]');
+    let currentActiveLink = null;
     
     // Handle navigation link clicks
     navLinks.forEach(link => {
         link.addEventListener('click', async (e) => {
             e.preventDefault();
             const page = link.getAttribute('data-page');
-            await loadPageContent(page);
-            showOverlay();
+            
+            // If clicking the currently active link, close the overlay
+            if (link === currentActiveLink) {
+                hideOverlay();
+                return;
+            }
+            
+            // Start overlay transition first
+            showOverlay(link);
+            // Hide content immediately, then load/show after transitions complete
+            overlayBody.style.opacity = '0';
+            setTimeout(async () => {
+                await loadPageContent(page);
+                overlayBody.style.opacity = '1';
+            }, 400); // Wait for 0.8s transition to complete
         });
     });
-    
-    // Handle close button
-    closeBtn.addEventListener('click', hideOverlay);
     
     // Handle backdrop click
     overlay.addEventListener('click', (e) => {
@@ -399,14 +410,32 @@ function initializeOverlayNav() {
         }
     }
     
-    function showOverlay() {
+    function showOverlay(activeLink) {
+        // Remove active class from all links
+        navLinks.forEach(link => link.classList.remove('active'));
+        // Add active class to current link
+        activeLink.classList.add('active');
+        currentActiveLink = activeLink;
+        
+        overlayBlur.classList.add('active');
         overlay.classList.add('active');
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
     }
     
     function hideOverlay() {
-        overlay.classList.remove('active');
-        document.body.style.overflow = ''; // Restore scrolling
+        // Hide content immediately
+        overlayBody.style.opacity = '0';
+        
+        // Remove active class from all links
+        navLinks.forEach(link => link.classList.remove('active'));
+        currentActiveLink = null;
+        
+        // Delay overlay/blur transitions by 0.4s
+        setTimeout(() => {
+            overlay.classList.remove('active');
+            overlayBlur.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        }, 400);
     }
 }
 
