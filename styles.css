@@ -180,10 +180,10 @@ a {
     object-fit: cover;
 }
 
-/* Three-Column Layout System for Overlay Pages */
+/* Six-Column Layout System for Overlay Pages */
 .overlay-page {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(6, 1fr);
     gap: var(--space-lg);
     align-items: start;
     width: 100%;
@@ -191,9 +191,10 @@ a {
 }
 
 /* Column span utilities */
-.col-1 { grid-column: span 1; }
-.col-2 { grid-column: span 2; }
-.col-3 { grid-column: span 3; }
+.col-half { grid-column: span 1; }
+.col-1 { grid-column: span 2; }
+.col-2 { grid-column: span 4; }
+.col-3 { grid-column: span 6; }
 
 /* Column position utilities */
 .col-start-1 { grid-column-start: 1; }
@@ -444,7 +445,7 @@ a {
 .overlay-body {
     height: 100%;
     overflow-y: auto;
-    padding: calc(var(--header-height) + 20px) 80px;
+    padding: calc(var(--header-height) + 20px) 32px;
     display: flex;
     align-items: center;
     justify-content: center;
