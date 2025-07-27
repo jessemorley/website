@@ -1,15 +1,14 @@
 // Portfolio Images Configuration
 const portfolioImages = [
     { file: 'portfolio-04.jpg', alt: 'Green Night Scene' },
-    { file: 'portfolio-01.webp', alt: 'Silver Rings on Red' },
+    { file: 'portfolio-06.webp', alt: 'Fashion Portrait Mali' },
     { file: 'portfolio-02.webp', alt: 'After Still Life' },
-    { file: 'portfolio-03.webp', alt: 'After BTS' },
-    { file: 'portfolio-06.webp', alt: 'Fashion Portrait' },
-    { file: 'portfolio-07.webp', alt: 'Fashion Portrait' },
-    { file: 'portfolio-08.webp', alt: 'Still Life Ring on Can' },
     { file: 'portfolio-09.webp', alt: 'Still Life Items in Tray' },
+    { file: 'portfolio-03.webp', alt: 'After BTS' },
+    { file: 'portfolio-07.webp', alt: 'Fashion Portrait Mariangel' },
+    { file: 'portfolio-01.webp', alt: 'Silver Rings on Red' },
+    { file: 'portfolio-08.webp', alt: 'Still Life Ring on Can' },
     { file: 'portfolio-10.jpg', alt: 'Still Life Fruit and Paint' },
-
 ];
 
 // Generate gallery dynamically with duplication for infinite scroll
@@ -64,6 +63,12 @@ function initializePage() {
     
     // Initialize overlay navigation
     initializeOverlayNav();
+    
+    // Initialize logo behavior
+    initializeLogoBehavior();
+    
+    // Initialize obfuscated email
+    initializeObfuscatedEmail();
 }
 
 // Set current year in copyright
@@ -155,13 +160,8 @@ function initializeScrollMovement() {
             const totalHeight = imageGrid.scrollHeight;
             const singleSetHeight = Math.floor(totalHeight / 3); // Back to simple division
             
-            console.log('Portfolio images:', portfolioImages.length);
-            console.log('Total grid height:', totalHeight);
-            console.log('Single set height:', singleSetHeight);
-            console.log('Should have', portfolioImages.length * 3, 'total images');
             
             if (singleSetHeight === 0) {
-                console.log('Height not ready, retrying...');
                 setTimeout(checkHeight, 100);
                 return;
             }
@@ -281,37 +281,14 @@ function initializeScrollMovement() {
 }
 
 
-// Form submission handler
-const form = document.querySelector('form');
-if (form) {
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const submitBtn = form.querySelector('.submit-btn');
-        const originalText = submitBtn.textContent;
-        
-        // Show loading state
-        submitBtn.textContent = 'Sending...';
-        submitBtn.disabled = true;
-        
-        // Simulate form submission (replace with actual submission logic)
-        setTimeout(() => {
-            submitBtn.textContent = 'Message Sent!';
-            form.reset();
-            
-            setTimeout(() => {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }, 2000);
-        }, 1000);
-    });
-}
 
 // Smooth scroll for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return; // Skip empty hash links
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const target = document.querySelector(href);
         if (target) {
             target.scrollIntoView({
                 behavior: 'smooth',
@@ -321,6 +298,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// Global overlay variables and functions
+let overlayTimeline = null;
+let currentActiveLink = null;
+
 // Overlay Navigation System with GSAP
 function initializeOverlayNav() {
     const overlay = document.getElementById('pageOverlay');
@@ -328,8 +309,6 @@ function initializeOverlayNav() {
     const overlayContent = document.getElementById('overlayContent');
     const overlayBody = document.getElementById('overlayBody');
     const navLinks = document.querySelectorAll('.nav-link[data-page]');
-    let currentActiveLink = null;
-    let overlayTimeline = null;
     
     // Handle navigation link clicks
     navLinks.forEach(link => {
@@ -356,8 +335,8 @@ function initializeOverlayNav() {
     });
     
     // Handle backdrop click
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay || e.target.classList.contains('overlay-backdrop')) {
+    overlayBlur.addEventListener('click', (e) => {
+        if (e.target === overlayBlur) {
             hideOverlay();
         }
     });
@@ -381,6 +360,8 @@ function initializeOverlayNav() {
             
             if (mainContent) {
                 overlayBody.innerHTML = mainContent.innerHTML;
+                // Re-initialize email obfuscation after loading new content
+                initializeObfuscatedEmail();
             }
         } catch (error) {
             console.error('Error loading page content:', error);
@@ -430,47 +411,82 @@ function initializeOverlayNav() {
         });
     }
     
-    function hideOverlay() {
-        return new Promise((resolve) => {
-            // Remove active class from all links
-            navLinks.forEach(link => link.classList.remove('active'));
-            currentActiveLink = null;
-            
-            // Kill any existing timeline
-            if (overlayTimeline) overlayTimeline.kill();
-            
-            // Create GSAP timeline for smooth overlay exit
-            overlayTimeline = gsap.timeline({
-                onComplete: () => {
-                    document.body.style.overflow = '';
-                    resolve();
-                }
-            });
-            
-            // Animate out in reverse sequence
-            overlayTimeline
-                .to(overlayBody, { 
-                    opacity: 0, 
-                    duration: 0.2, 
-                    ease: "power2.in" 
-                })
-                .to(overlayBlur, {
-                    backdropFilter: 'blur(0px)',
-                    duration: 0.6,
-                    ease: "power3.in"
-                }, "-=0.2")
-                .to(overlayContent, {
-                    backgroundColor: 'rgba(255,255,255, 0)',
-                    duration: 0.6,
-                    ease: "power3.in"
-                }, "-=0.6")
-                .to(overlay, { 
-                    opacity: 0, 
-                    duration: 0.3, 
-                    ease: "power2.in" 
-                }, "-=0.2")
-                .set(overlay, { visibility: 'hidden' });
+}
+
+// Global hideOverlay function
+function hideOverlay() {
+    return new Promise((resolve) => {
+        const overlay = document.getElementById('pageOverlay');
+        const overlayBlur = document.getElementById('overlayBlur');
+        const overlayContent = document.getElementById('overlayContent');
+        const overlayBody = document.getElementById('overlayBody');
+        const navLinks = document.querySelectorAll('.nav-link[data-page]');
+        
+        // Remove active class from all links
+        navLinks.forEach(link => link.classList.remove('active'));
+        currentActiveLink = null;
+        
+        // Kill any existing timeline
+        if (overlayTimeline) overlayTimeline.kill();
+        
+        // Create GSAP timeline for smooth overlay exit
+        overlayTimeline = gsap.timeline({
+            onComplete: () => {
+                document.body.style.overflow = '';
+                resolve();
+            }
         });
+        
+        // Animate out in reverse sequence
+        overlayTimeline
+            .to(overlayBody, { 
+                opacity: 0, 
+                duration: 0.2, 
+                ease: "power2.in" 
+            })
+            .to(overlayBlur, {
+                backdropFilter: 'blur(0px)',
+                duration: 0.6,
+                ease: "power3.in"
+            }, "-=0.2")
+            .to(overlayContent, {
+                backgroundColor: 'rgba(255,255,255, 0)',
+                duration: 0.6,
+                ease: "power3.in"
+            }, "-=0.6")
+            .to(overlay, { 
+                opacity: 0, 
+                duration: 0.3, 
+                ease: "power2.in" 
+            }, "-=0.2")
+            .set(overlay, { visibility: 'hidden' });
+    });
+}
+
+// Email obfuscation to prevent spam bots
+function initializeObfuscatedEmail() {
+    const emailLink = document.getElementById('email-link');
+    if (emailLink) {
+        const parts = ['hi', 'jessemorley', 'com'];
+        const email = parts[0] + '@' + parts[1] + '.' + parts[2];
+        emailLink.innerHTML = '<a href="mailto:' + email + '" class="email-link">' + email + '</a>';
     }
 }
 
+// Logo behavior - close overlay if open, otherwise go to home
+function initializeLogoBehavior() {
+    const logoLink = document.querySelector('.logo a');
+    if (logoLink) {
+        logoLink.addEventListener('click', (e) => {
+            e.preventDefault(); // Always prevent default
+            const overlay = document.getElementById('pageOverlay');
+            if (overlay && (overlay.style.opacity === '1' || overlay.style.visibility === 'visible')) {
+                hideOverlay();
+            } else if (!window.location.pathname.endsWith('index.html') && window.location.pathname !== '/') {
+                // If no overlay is active and not on home page, go to home
+                window.location.href = 'index.html';
+            }
+            // If already on home page with no overlay, do nothing
+        });
+    }
+}
