@@ -69,8 +69,8 @@ function setCurrentYear() {
 
 // Animation system
 const observerOptions = {
-    threshold: 0,
-    rootMargin: '0px 0px 0px 0px'
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
 };
 
 const observer = new IntersectionObserver((entries) => {
@@ -88,6 +88,8 @@ function initializeAnimations() {
         // Add staggered delay for grid items
         if (el.closest('.image-grid')) {
             el.style.transitionDelay = `${index * 0.1}s`;
+            // Show all images immediately on page load
+            el.classList.add('visible');
         }
         observer.observe(el);
     });
