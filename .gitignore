@@ -27,3 +27,6 @@ npm-debug.log*
 # Build outputs
 dist/
 build/
+
+# Agent
+CLAUDE.md
