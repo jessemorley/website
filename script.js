@@ -402,7 +402,7 @@ function initializeOverlayNav() {
                     ease: "power3.out"
                 }, "-=0.1")
                 .to(overlayContent, {
-                    backgroundColor: 'rgba(255,255,255, .6)',
+                    backgroundColor: 'rgba(255,255,255, .8)',
                     duration: 0.6,
                     ease: "power3.out"
                 }, "-=0.6");
