@@ -18,6 +18,17 @@
         </div>
     </div>
     
+    <!-- Page Overlay -->
+    <div class="page-overlay" id="pageOverlay">
+        <div class="overlay-backdrop"></div>
+        <div class="overlay-content">
+            <button class="overlay-close" id="overlayClose">&times;</button>
+            <div class="overlay-body" id="overlayBody">
+                <!-- Content will be loaded here -->
+            </div>
+        </div>
+    </div>
+    
     <div class="blur-top"></div>
     <div class="blur-bottom"></div>
     
@@ -29,7 +40,8 @@
                 </a>
             </div>
             <nav class="nav">
-                <a href="#" class="nav-link active">Info</a>
+                <a href="#" class="nav-link" data-page="info">Info</a>
+                <a href="#" class="nav-link" data-page="contact">Contact</a>
             </nav>
         </div>
     </header>
@@ -42,7 +54,7 @@
 
     <footer class="footer">
         <div class="footer-content">
-            <div class="copyright">&copy; <span id="current-year"></span>. All rights reserved.</div>
+            <div class="copyright">&copy; <span id="current-year"></span></div>
             <div class="social-links">
                 <a href="#" class="social-link">LinkedIn</a>
                 <a href="#" class="social-link">Instagram</a>

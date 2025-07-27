@@ -61,6 +61,9 @@ function initializePage() {
     
     // Initialize scroll-triggered grid movement
     initializeScrollMovement();
+    
+    // Initialize overlay navigation
+    initializeOverlayNav();
 }
 
 // Set current year in copyright
@@ -172,9 +175,9 @@ function initializeScrollMovement() {
         function updateGridPosition() {
             // Reset position seamlessly when we've scrolled through one complete set
             if (scrollPosition >= singleSetHeight) {
-                scrollPosition = scrollPosition - singleSetHeight;
+                scrollPosition = scrollPosition % singleSetHeight;
             } else if (scrollPosition < 0) {
-                scrollPosition = scrollPosition + singleSetHeight;
+                scrollPosition = scrollPosition % singleSetHeight + singleSetHeight;
             }
             
             imageGrid.style.transform = `translateY(-${scrollPosition}px)`;
@@ -301,4 +304,70 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+// Overlay Navigation System
+function initializeOverlayNav() {
+    const overlay = document.getElementById('pageOverlay');
+    const overlayBody = document.getElementById('overlayBody');
+    const closeBtn = document.getElementById('overlayClose');
+    const navLinks = document.querySelectorAll('.nav-link[data-page]');
+    
+    // Handle navigation link clicks
+    navLinks.forEach(link => {
+        link.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const page = link.getAttribute('data-page');
+            await loadPageContent(page);
+            showOverlay();
+        });
+    });
+    
+    // Handle close button
+    closeBtn.addEventListener('click', hideOverlay);
+    
+    // Handle backdrop click
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay || e.target.classList.contains('overlay-backdrop')) {
+            hideOverlay();
+        }
+    });
+    
+    // Handle escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay.classList.contains('active')) {
+            hideOverlay();
+        }
+    });
+    
+    async function loadPageContent(page) {
+        try {
+            const response = await fetch(`${page}.html`);
+            const html = await response.text();
+            
+            // Extract content from the main element
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const mainContent = doc.querySelector('main');
+            
+            if (mainContent) {
+                overlayBody.innerHTML = mainContent.innerHTML;
+                // Initialize any fade-in animations for the loaded content
+                initializeAnimations();
+            }
+        } catch (error) {
+            console.error('Error loading page content:', error);
+            overlayBody.innerHTML = '<p>Error loading content. Please try again.</p>';
+        }
+    }
+    
+    function showOverlay() {
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+    
+    function hideOverlay() {
+        overlay.classList.remove('active');
+        document.body.style.overflow = ''; // Restore scrolling
+    }
+}
 
