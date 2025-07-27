@@ -1,15 +1,15 @@
 // Portfolio Images Configuration
 const portfolioImages = [
-    { file: 'portfolio-04.jpg', alt: 'Portrait Photography' },
-    { file: 'portfolio-01.webp', alt: 'Fashion Photography' },
-    { file: 'portfolio-02.webp', alt: 'Still Life Photography' },
-    { file: 'portfolio-03.webp', alt: 'Still Life Study' },
-    { file: 'portfolio-05.webp', alt: 'Fashion Editorial' },
-    { file: 'portfolio-06.webp', alt: 'Portrait Session' },
+    { file: 'portfolio-04.jpg', alt: 'Green Night Scene' },
+    { file: 'portfolio-01.webp', alt: 'Silver Rings on Red' },
+    { file: 'portfolio-02.webp', alt: 'After Still Life' },
+    { file: 'portfolio-03.webp', alt: 'After BTS' },
+    { file: 'portfolio-06.webp', alt: 'Fashion Portrait' },
     { file: 'portfolio-07.webp', alt: 'Fashion Portrait' },
-    { file: 'portfolio-08.webp', alt: 'Creative Photography' },
-    { file: 'portfolio-09.webp', alt: 'Fashion Photography' },
-    { file: 'portfolio-10.jpg', alt: 'Still Life Art' }
+    { file: 'portfolio-08.webp', alt: 'Still Life Ring on Can' },
+    { file: 'portfolio-09.webp', alt: 'Still Life Items in Tray' },
+    { file: 'portfolio-10.jpg', alt: 'Still Life Fruit and Paint' },
+
 ];
 
 // Generate gallery dynamically with duplication for infinite scroll
@@ -170,14 +170,32 @@ function initializeScrollMovement() {
     
     // Wait for images to load to get accurate height
     setTimeout(() => {
-        const singleSetHeight = imageGrid.scrollHeight / 3; // Divide by number of duplicates
+        // Ensure all images are loaded before calculating height
+        const images = imageGrid.querySelectorAll('img');
+        let loadedImages = 0;
+        
+        const checkHeight = () => {
+            const totalHeight = imageGrid.scrollHeight;
+            const singleSetHeight = Math.floor(totalHeight / 3); // Back to simple division
+            
+            console.log('Portfolio images:', portfolioImages.length);
+            console.log('Total grid height:', totalHeight);
+            console.log('Single set height:', singleSetHeight);
+            console.log('Should have', portfolioImages.length * 3, 'total images');
+            
+            if (singleSetHeight === 0) {
+                console.log('Height not ready, retrying...');
+                setTimeout(checkHeight, 100);
+                return;
+            }
         
         function updateGridPosition() {
-            // Reset position seamlessly when we've scrolled through one complete set
-            if (scrollPosition >= singleSetHeight) {
-                scrollPosition = scrollPosition % singleSetHeight;
-            } else if (scrollPosition < 0) {
-                scrollPosition = scrollPosition % singleSetHeight + singleSetHeight;
+            // Keep scroll position within reasonable bounds to prevent large jumps
+            while (scrollPosition >= singleSetHeight) {
+                scrollPosition -= singleSetHeight;
+            }
+            while (scrollPosition < 0) {
+                scrollPosition += singleSetHeight;
             }
             
             imageGrid.style.transform = `translateY(-${scrollPosition}px)`;
@@ -206,6 +224,9 @@ function initializeScrollMovement() {
         let momentumAnimation = null;
         
         window.addEventListener('touchstart', (e) => {
+            // Only handle if overlay is not active
+            if (document.getElementById('pageOverlay').classList.contains('active')) return;
+            
             touchStartY = e.touches[0].clientY;
             touchStartTime = Date.now();
             velocity = 0;
@@ -217,6 +238,9 @@ function initializeScrollMovement() {
         }, { passive: true });
         
         window.addEventListener('touchmove', (e) => {
+            // Only handle if overlay is not active
+            if (document.getElementById('pageOverlay').classList.contains('active')) return;
+            
             e.preventDefault();
             touchEndY = e.touches[0].clientY;
             const deltaY = touchStartY - touchEndY;
@@ -234,15 +258,26 @@ function initializeScrollMovement() {
         }, { passive: false });
         
         window.addEventListener('touchend', () => {
+            // Only handle if overlay is not active
+            if (document.getElementById('pageOverlay').classList.contains('active')) return;
+            
             // Apply momentum scrolling
             if (Math.abs(velocity) > 0.05) {
                 const applyMomentum = () => {
+                    // Stop momentum if overlay becomes active
+                    if (document.getElementById('pageOverlay').classList.contains('active')) {
+                        momentumAnimation = null;
+                        return;
+                    }
+                    
                     velocity *= 0.95; // Friction factor
                     scrollPosition += velocity * 16; // Apply velocity (16ms per frame)
                     requestTick();
                     
                     if (Math.abs(velocity) > 0.01) {
                         momentumAnimation = requestAnimationFrame(applyMomentum);
+                    } else {
+                        momentumAnimation = null;
                     }
                 };
                 applyMomentum();
@@ -261,6 +296,10 @@ function initializeScrollMovement() {
                 requestTick();
             }
         });
+        
+        };
+        
+        checkHeight(); // Start the height check
     }, 500); // Wait for images to load
 }
 

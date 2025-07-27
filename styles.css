@@ -495,9 +495,9 @@ a {
         padding: var(--space-md) var(--space-lg);
     }
     
-    .image-grid {
+    /* .image-grid {
         grid-template-columns: repeat(2, 1fr);
-    }
+    } */
     
     .info-content {
         grid-template-columns: 1fr 1fr;
@@ -516,7 +516,7 @@ a {
 }
 
 /* Desktop Styles */
-@media (min-width: 1024px) {
+@media (min-width: 600px) {
     .image-grid {
         grid-template-columns: repeat(3, 1fr);
     }
