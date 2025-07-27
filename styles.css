@@ -210,24 +210,31 @@ a {
     font-size: var(--font-size-3xl);
     margin-bottom: var(--space-md);
     font-weight: 700;
+    color: var(--color-black);
 }
 
 .overlay-page h5 {
     font-size: var(--font-size-base);
     margin-bottom: var(--space-sm);
+    color: var(--color-black);
 }
 
 .overlay-page p {
     margin-bottom: var(--space-sm);
-    font-size: var(--font-size-large);
+    font-size: var(--font-size-xl);
     line-height: var(--line-height-relaxed);
-    color: var(--color-text-lighter);
+    color: var(--color-black);
 }
 
 .overlay-page img {
     max-width: 100%;
     border-radius: var(--border-radius-large);
     box-shadow: var(--shadow);
+}
+
+.overlay-page ul,
+.overlay-page li {
+    color: var(--color-black);
 }
 
 /* Legacy support for existing pages */
@@ -467,11 +474,14 @@ a {
 }
 
 .overlay-content {
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(255, 255, 255, 0);
-    overflow: hidden;
+    z-index: 48;
+    pointer-events: none;
 }
 
 

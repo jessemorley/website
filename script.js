@@ -26,7 +26,7 @@ function generateGallery() {
     for (let d = 0; d < duplicates; d++) {
         portfolioImages.forEach((image) => {
             const imageItem = document.createElement('div');
-            imageItem.className = 'image-item fade-in';
+            imageItem.className = 'image-item';
             
             const img = document.createElement('img');
             img.src = `./images/porfolio/${image.file}`;
@@ -132,32 +132,9 @@ function initializePreloader() {
     updatePercentage();
 }
 
-// Animation system
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-        }
-    });
-}, observerOptions);
-
-// Initialize animations for fade-in elements
+// Initialize animations - now just a placeholder
 function initializeAnimations() {
-    const fadeElements = document.querySelectorAll('.fade-in');
-    fadeElements.forEach((el, index) => {
-        // Add staggered delay for grid items
-        if (el.closest('.image-grid')) {
-            el.style.transitionDelay = `${index * 0.1}s`;
-            // Show all images immediately on page load
-            el.classList.add('visible');
-        }
-        observer.observe(el);
-    });
+    // No animations - all elements show immediately
 }
 
 // Scroll-triggered grid movement with seamless infinite loop
@@ -348,6 +325,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 function initializeOverlayNav() {
     const overlay = document.getElementById('pageOverlay');
     const overlayBlur = document.getElementById('overlayBlur');
+    const overlayContent = document.getElementById('overlayContent');
     const overlayBody = document.getElementById('overlayBody');
     const navLinks = document.querySelectorAll('.nav-link[data-page]');
     let currentActiveLink = null;
@@ -365,11 +343,15 @@ function initializeOverlayNav() {
                 return;
             }
             
-            // Start overlay transition first
-            await showOverlay(link);
-            // Load content and animate it in
-            await loadPageContent(page);
-            animateContentIn();
+            // Load content and start overlay transition simultaneously
+            const contentPromise = loadPageContent(page);
+            const overlayPromise = showOverlay(link);
+            
+            await contentPromise;
+            // Set content visible immediately after loading
+            overlayBody.style.opacity = '1';
+            
+            await overlayPromise;
         });
     });
     
@@ -399,8 +381,6 @@ function initializeOverlayNav() {
             
             if (mainContent) {
                 overlayBody.innerHTML = mainContent.innerHTML;
-                // Initialize any fade-in animations for the loaded content
-                initializeAnimations();
             }
         } catch (error) {
             console.error('Error loading page content:', error);
@@ -430,21 +410,21 @@ function initializeOverlayNav() {
             
             // Animate in sequence
             overlayTimeline
-                .to(overlayBlur, { 
-                    backdropFilter: 'blur(30px)', 
-                    duration: 0.4, 
-                    ease: "power2.out" 
-                })
                 .to(overlay, { 
                     opacity: 1, 
                     duration: 0.3, 
                     ease: "power2.out" 
-                }, "-=0.2")
-                .to(overlay.querySelector('.overlay-content'), {
-                    backgroundColor: 'rgba(255,255,255, .9)',
-                    duration: 0.4,
-                    ease: "power2.out"
-                }, "-=0.3");
+                })
+                .to(overlayBlur, {
+                    backdropFilter: 'blur(30px)',
+                    duration: 0.6,
+                    ease: "power3.out"
+                }, "-=0.1")
+                .to(overlayContent, {
+                    backgroundColor: 'rgba(255,255,255, .6)',
+                    duration: 0.6,
+                    ease: "power3.out"
+                }, "-=0.6");
                 
             document.body.style.overflow = 'hidden';
         });
@@ -474,38 +454,23 @@ function initializeOverlayNav() {
                     duration: 0.2, 
                     ease: "power2.in" 
                 })
-                .to(overlay.querySelector('.overlay-content'), {
+                .to(overlayBlur, {
+                    backdropFilter: 'blur(0px)',
+                    duration: 0.6,
+                    ease: "power3.in"
+                }, "-=0.2")
+                .to(overlayContent, {
                     backgroundColor: 'rgba(255,255,255, 0)',
-                    duration: 0.3,
-                    ease: "power2.in"
-                }, "-=0.1")
+                    duration: 0.6,
+                    ease: "power3.in"
+                }, "-=0.6")
                 .to(overlay, { 
                     opacity: 0, 
                     duration: 0.3, 
                     ease: "power2.in" 
                 }, "-=0.2")
-                .to(overlayBlur, { 
-                    backdropFilter: 'blur(0px)', 
-                    duration: 0.4, 
-                    ease: "power2.in" 
-                }, "-=0.3")
                 .set(overlay, { visibility: 'hidden' });
         });
-    }
-    
-    function animateContentIn() {
-        gsap.fromTo(overlayBody, 
-            { 
-                opacity: 0, 
-                y: 20 
-            },
-            { 
-                opacity: 1, 
-                y: 0, 
-                duration: 0.5, 
-                ease: "power2.out" 
-            }
-        );
     }
 }
 
