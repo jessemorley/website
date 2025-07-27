@@ -188,10 +188,27 @@ function initializeScrollMovement() {
             }
         }
         
-        // Use wheel event since body has overflow hidden
+        // Handle wheel events for desktop
         window.addEventListener('wheel', (e) => {
             e.preventDefault();
             scrollPosition += e.deltaY * 0.5; // Adjust scroll speed
+            requestTick();
+        }, { passive: false });
+        
+        // Handle touch events for mobile
+        let touchStartY = 0;
+        let touchEndY = 0;
+        
+        window.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+        
+        window.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            touchEndY = e.touches[0].clientY;
+            const deltaY = touchStartY - touchEndY;
+            scrollPosition += deltaY * 2; // Adjust touch sensitivity
+            touchStartY = touchEndY; // Update for continuous scrolling
             requestTick();
         }, { passive: false });
         
