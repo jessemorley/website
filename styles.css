@@ -494,6 +494,29 @@ a {
     transform: translateY(0);
 }
 
+/* Mobile Styles */
+@media (max-width: 767px) {
+    .overlay-page {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-md);
+    }
+    
+    .col-half { grid-column: span 1; }
+    .col-1 { grid-column: span 2; }
+    .col-2 { grid-column: span 3; }
+    .col-3 { grid-column: span 3; }
+    
+    /* Reorder elements for mobile: About, Description, Spacer, Clients */
+    .overlay-page > div:nth-child(1) { order: 1; } /* About (col-half) */
+    .overlay-page > div:nth-child(2) { order: 2; } /* Description (col-1) */
+    .overlay-page > div:nth-child(4) { order: 3; } /* Spacer (col-half) */
+    .overlay-page > div:nth-child(3) { order: 4; } /* Clients (col-1) */
+    
+    .overlay-body {
+        padding: calc(var(--header-height) + 20px) var(--space-md);
+    }
+}
+
 /* Tablet Styles */
 @media (min-width: 768px) {
     .header-content {
