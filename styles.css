@@ -355,9 +355,9 @@ a {
     left: 0;
     width: 100%;
     height: 100%;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(30px);
     z-index: 9998;
-    transition: opacity 0.8s ease 0.3s, visibility 0.8s ease 0.3s;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
 }
 
 .preloader-blur.hidden {

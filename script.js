@@ -2,12 +2,13 @@
 const portfolioImages = [
     { file: 'portfolio-04.jpg', alt: 'Portrait Photography' },
     { file: 'portfolio-01.webp', alt: 'Fashion Photography' },
-    { file: 'portfolio-02.jpg', alt: 'Still Life Photography' },
+    { file: 'portfolio-02.webp', alt: 'Still Life Photography' },
     { file: 'portfolio-03.webp', alt: 'Still Life Study' },
     { file: 'portfolio-05.webp', alt: 'Fashion Editorial' },
     { file: 'portfolio-06.webp', alt: 'Portrait Session' },
     { file: 'portfolio-07.webp', alt: 'Fashion Portrait' },
-    { file: 'portfolio-09.jpg', alt: 'Creative Photography' },
+    { file: 'portfolio-08.webp', alt: 'Creative Photography' },
+    { file: 'portfolio-09.webp', alt: 'Fashion Photography' },
     { file: 'portfolio-10.jpg', alt: 'Still Life Art' }
 ];
 
