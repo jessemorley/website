@@ -490,3 +490,25 @@ function initializeLogoBehavior() {
         });
     }
 }
+
+// Download jsync function
+function downloadJsync(event) {
+    event.preventDefault();
+    console.log('Download link clicked');
+    
+    fetch('https://api.github.com/repos/jessemorley/jsync/releases/latest')
+        .then(response => response.json())
+        .then(data => {
+            console.log('GitHub API response:', data);
+            const zipAsset = data.assets.find(asset => asset.name.endsWith('.zip'));
+            if (zipAsset) {
+                console.log('Found zip asset:', zipAsset.browser_download_url);
+                window.open(zipAsset.browser_download_url, '_blank');
+            } else {
+                console.log('No zip asset found');
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching release:', error);
+        });
+}
