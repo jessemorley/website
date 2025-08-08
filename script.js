@@ -502,18 +502,78 @@ function handleHashOnLoad() {
         const navLink = document.querySelector(`.nav-link[data-page="${hash}"]`);
         if (navLink) {
             // Longer delay to ensure all initialization is complete, especially on slower connections
-            setTimeout(() => {
+            setTimeout(async () => {
                 console.log('Triggering hash navigation for:', hash);
-                navLink.click();
                 
-                // Additional delay to ensure content opacity is set after overlay animation
-                setTimeout(() => {
-                    const overlayBody = document.getElementById('overlayBody');
-                    if (overlayBody) {
-                        overlayBody.style.opacity = '1';
-                        console.log('Ensured overlay content opacity is set to 1');
+                // Manually replicate the nav link click logic
+                const overlay = document.getElementById('pageOverlay');
+                const overlayBlur = document.getElementById('overlayBlur');
+                const overlayContent = document.getElementById('overlayContent');
+                const overlayBody = document.getElementById('overlayBody');
+                const navLinks = document.querySelectorAll('.nav-link[data-page]');
+                
+                if (currentActiveLink === navLink) {
+                    return; // Don't open if already active
+                }
+                
+                // Load content first
+                try {
+                    const response = await fetch(`${hash}.html`);
+                    const html = await response.text();
+                    
+                    // Extract content from the main element
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const mainContent = doc.querySelector('main');
+                    
+                    if (mainContent) {
+                        overlayBody.innerHTML = mainContent.innerHTML;
+                        // Re-initialize email obfuscation after loading new content
+                        initializeObfuscatedEmail();
                     }
-                }, 100);
+                } catch (error) {
+                    console.error('Error loading page content:', error);
+                    overlayBody.innerHTML = '<p>Error loading content. Please try again.</p>';
+                }
+                
+                // Remove active class from all links and add to current
+                navLinks.forEach(link => link.classList.remove('active'));
+                navLink.classList.add('active');
+                currentActiveLink = navLink;
+                
+                // Show overlay with GSAP animation (copied from showOverlay function)
+                if (overlayTimeline) overlayTimeline.kill();
+                
+                overlayTimeline = gsap.timeline();
+                
+                // Set initial states
+                gsap.set(overlay, { opacity: 0, visibility: 'visible' });
+                gsap.set(overlayBody, { opacity: 0 });
+                
+                // Animate in sequence
+                overlayTimeline
+                    .to(overlay, { 
+                        opacity: 1, 
+                        duration: 0.3, 
+                        ease: "power2.out" 
+                    })
+                    .to(overlayBlur, {
+                        backdropFilter: 'blur(30px)',
+                        duration: 0.6,
+                        ease: "power3.out"
+                    }, "-=0.1")
+                    .to(overlayContent, {
+                        backgroundColor: 'rgba(255,255,255, .8)',
+                        duration: 0.6,
+                        ease: "power3.out"
+                    }, "-=0.6");
+                    
+                document.body.style.overflow = 'hidden';
+                
+                // Set content visible immediately after loading
+                overlayBody.style.opacity = '1';
+                console.log('Hash navigation completed for:', hash);
+                
             }, 500);
         }
     }
