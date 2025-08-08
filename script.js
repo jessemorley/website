@@ -356,8 +356,10 @@ function initializeOverlayNav() {
     
     async function loadPageContent(page) {
         try {
+            console.log('Loading page content for:', page);
             const response = await fetch(`${page}.html`);
             const html = await response.text();
+            console.log('Fetched HTML length:', html.length);
             
             // Extract content from the main element
             const parser = new DOMParser();
@@ -365,9 +367,13 @@ function initializeOverlayNav() {
             const mainContent = doc.querySelector('main');
             
             if (mainContent) {
+                console.log('Main content found, innerHTML length:', mainContent.innerHTML.length);
                 overlayBody.innerHTML = mainContent.innerHTML;
+                console.log('Content set in overlayBody, new innerHTML length:', overlayBody.innerHTML.length);
                 // Re-initialize email obfuscation after loading new content
                 initializeObfuscatedEmail();
+            } else {
+                console.log('No main content found in fetched HTML');
             }
         } catch (error) {
             console.error('Error loading page content:', error);
