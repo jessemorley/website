@@ -501,10 +501,11 @@ function handleHashOnLoad() {
         // Find the corresponding nav link
         const navLink = document.querySelector(`.nav-link[data-page="${hash}"]`);
         if (navLink) {
-            // Small delay to ensure all initialization is complete
+            // Longer delay to ensure all initialization is complete, especially on slower connections
             setTimeout(() => {
+                console.log('Triggering hash navigation for:', hash);
                 navLink.click();
-            }, 100);
+            }, 500);
         }
     }
 }
