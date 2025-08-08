@@ -330,8 +330,11 @@ function initializeOverlayNav() {
             const overlayPromise = showOverlay(link);
             
             await contentPromise;
-            // Set content visible immediately after loading
-            overlayBody.style.opacity = '1';
+            // Set content visible during the overlay animation (not immediately)
+            setTimeout(() => {
+                console.log('Normal nav click: setting overlayBody opacity to 1 at time:', Date.now());
+                overlayBody.style.opacity = '1';
+            }, 200); // Delay to show content during the blur animation phase
             
             await overlayPromise;
         });
@@ -505,6 +508,13 @@ function handleHashOnLoad() {
             setTimeout(async () => {
                 console.log('Triggering hash navigation for:', hash);
                 
+                // Check if overlay system is ready
+                if (!window.gsap) {
+                    console.error('GSAP not loaded, retrying hash navigation...');
+                    setTimeout(() => handleHashOnLoad(), 500);
+                    return;
+                }
+                
                 // Manually replicate the nav link click logic
                 const overlay = document.getElementById('pageOverlay');
                 const overlayBlur = document.getElementById('overlayBlur');
@@ -512,12 +522,9 @@ function handleHashOnLoad() {
                 const overlayBody = document.getElementById('overlayBody');
                 const navLinks = document.querySelectorAll('.nav-link[data-page]');
                 
-                if (currentActiveLink === navLink) {
-                    return; // Don't open if already active
-                }
-                
-                // Load content first
+                // Pre-load the content before triggering nav link click
                 try {
+                    console.log('Loading content for hash:', hash);
                     const response = await fetch(`${hash}.html`);
                     const html = await response.text();
                     
@@ -528,6 +535,7 @@ function handleHashOnLoad() {
                     
                     if (mainContent) {
                         overlayBody.innerHTML = mainContent.innerHTML;
+                        console.log('Content loaded into overlay body');
                         // Re-initialize email obfuscation after loading new content
                         initializeObfuscatedEmail();
                     }
@@ -536,42 +544,26 @@ function handleHashOnLoad() {
                     overlayBody.innerHTML = '<p>Error loading content. Please try again.</p>';
                 }
                 
-                // Remove active class from all links and add to current
-                navLinks.forEach(link => link.classList.remove('active'));
-                navLink.classList.add('active');
-                currentActiveLink = navLink;
+                // Add observer to watch for opacity changes
+                const observer = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                            const opacity = overlayBody.style.opacity;
+                            console.log('overlayBody opacity changed to:', opacity, 'at time:', Date.now());
+                        }
+                    });
+                });
+                observer.observe(overlayBody, { attributes: true, attributeFilter: ['style'] });
                 
-                // Show overlay with GSAP animation (copied from showOverlay function)
-                if (overlayTimeline) overlayTimeline.kill();
+                // Stop observing after 3 seconds
+                setTimeout(() => observer.disconnect(), 3000);
                 
-                overlayTimeline = gsap.timeline();
+                console.log('Current overlayBody opacity before click:', overlayBody.style.opacity);
                 
-                // Set initial states
-                gsap.set(overlay, { opacity: 0, visibility: 'visible' });
-                gsap.set(overlayBody, { opacity: 0 });
-                
-                // Animate in sequence
-                overlayTimeline
-                    .to(overlay, { 
-                        opacity: 1, 
-                        duration: 0.3, 
-                        ease: "power2.out" 
-                    })
-                    .to(overlayBlur, {
-                        backdropFilter: 'blur(30px)',
-                        duration: 0.6,
-                        ease: "power3.out"
-                    }, "-=0.1")
-                    .to(overlayContent, {
-                        backgroundColor: 'rgba(255,255,255, .8)',
-                        duration: 0.6,
-                        ease: "power3.out"
-                    }, "-=0.6");
-                    
-                document.body.style.overflow = 'hidden';
-                
-                // Set content visible immediately after loading
-                overlayBody.style.opacity = '1';
+                // Now trigger the actual nav link click to get proper timing
+                const clickEvent = new Event('click', { bubbles: true, cancelable: true });
+                console.log('Dispatching click event on nav link');
+                navLink.dispatchEvent(clickEvent);
                 console.log('Hash navigation completed for:', hash);
                 
             }, 500);
