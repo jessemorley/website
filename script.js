@@ -69,6 +69,9 @@ function initializePage() {
     
     // Initialize obfuscated email
     initializeObfuscatedEmail();
+    
+    // Handle hash on page load
+    handleHashOnLoad();
 }
 
 // Set current year in copyright
@@ -488,6 +491,21 @@ function initializeLogoBehavior() {
             }
             // If already on home page with no overlay, do nothing
         });
+    }
+}
+
+// Handle hash navigation on page load
+function handleHashOnLoad() {
+    const hash = window.location.hash.slice(1); // Remove the # symbol
+    if (hash && (hash === 'info' || hash === 'contact')) {
+        // Find the corresponding nav link
+        const navLink = document.querySelector(`.nav-link[data-page="${hash}"]`);
+        if (navLink) {
+            // Small delay to ensure all initialization is complete
+            setTimeout(() => {
+                navLink.click();
+            }, 100);
+        }
     }
 }
 
