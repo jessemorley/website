@@ -369,6 +369,7 @@ function initializeOverlayNav() {
             
             if (mainContent) {
                 console.log('Main content found, innerHTML length:', mainContent.innerHTML.length);
+                console.log('Main content HTML:', mainContent.innerHTML);
                 overlayBody.innerHTML = mainContent.innerHTML;
                 console.log('Content set in overlayBody, new innerHTML length:', overlayBody.innerHTML.length);
                 // Re-initialize email obfuscation after loading new content
