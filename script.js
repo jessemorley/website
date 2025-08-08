@@ -522,49 +522,10 @@ function handleHashOnLoad() {
                 const overlayBody = document.getElementById('overlayBody');
                 const navLinks = document.querySelectorAll('.nav-link[data-page]');
                 
-                // Pre-load the content before triggering nav link click
-                try {
-                    console.log('Loading content for hash:', hash);
-                    const response = await fetch(`${hash}.html`);
-                    const html = await response.text();
-                    
-                    // Extract content from the main element
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const mainContent = doc.querySelector('main');
-                    
-                    if (mainContent) {
-                        overlayBody.innerHTML = mainContent.innerHTML;
-                        console.log('Content loaded into overlay body');
-                        // Re-initialize email obfuscation after loading new content
-                        initializeObfuscatedEmail();
-                    }
-                } catch (error) {
-                    console.error('Error loading page content:', error);
-                    overlayBody.innerHTML = '<p>Error loading content. Please try again.</p>';
-                }
-                
-                // Add observer to watch for opacity changes
-                const observer = new MutationObserver((mutations) => {
-                    mutations.forEach((mutation) => {
-                        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-                            const opacity = overlayBody.style.opacity;
-                            console.log('overlayBody opacity changed to:', opacity, 'at time:', Date.now());
-                        }
-                    });
-                });
-                observer.observe(overlayBody, { attributes: true, attributeFilter: ['style'] });
-                
-                // Stop observing after 3 seconds
-                setTimeout(() => observer.disconnect(), 3000);
-                
-                console.log('Current overlayBody opacity before click:', overlayBody.style.opacity);
-                
-                // Now trigger the actual nav link click to get proper timing
+                // Simply trigger the nav link click to get proper timing and content loading
+                console.log('Triggering nav link click for hash:', hash);
                 const clickEvent = new Event('click', { bubbles: true, cancelable: true });
-                console.log('Dispatching click event on nav link');
                 navLink.dispatchEvent(clickEvent);
-                console.log('Hash navigation completed for:', hash);
                 
             }, 500);
         }
