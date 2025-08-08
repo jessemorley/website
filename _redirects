@@ -1,0 +1,7 @@
+# Redirect clean URLs to index.html with hash fragments
+/info    /index.html#info    302
+/contact /index.html#contact 302
+
+# Redirect .html files to index.html with hash fragments (backup for JS redirect)
+/info.html    /index.html#info    302
+/contact.html /index.html#contact 302
