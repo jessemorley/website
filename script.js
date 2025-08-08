@@ -358,7 +358,7 @@ function initializeOverlayNav() {
     async function loadPageContent(page) {
         try {
             console.log('Loading page content for:', page);
-            const response = await fetch(`${page}.html`);
+            const response = await fetch(`${page}.html?bypass`);
             const html = await response.text();
             console.log('Fetched HTML length:', html.length);
             
