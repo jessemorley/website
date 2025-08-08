@@ -333,6 +333,7 @@ function initializeOverlayNav() {
             // Set content visible during the overlay animation (not immediately)
             setTimeout(() => {
                 console.log('Normal nav click: setting overlayBody opacity to 1 at time:', Date.now());
+                console.log('overlayBody content at opacity set:', overlayBody.innerHTML.substring(0, 200));
                 overlayBody.style.opacity = '1';
             }, 200); // Delay to show content during the blur animation phase
             
