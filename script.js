@@ -524,8 +524,11 @@ function handleHashOnLoad() {
                 
                 // Simply trigger the nav link click to get proper timing and content loading
                 console.log('Triggering nav link click for hash:', hash);
+                console.log('Nav link found:', navLink);
+                console.log('Current active link before click:', currentActiveLink);
                 const clickEvent = new Event('click', { bubbles: true, cancelable: true });
                 navLink.dispatchEvent(clickEvent);
+                console.log('Click event dispatched');
                 
             }, 500);
         }
