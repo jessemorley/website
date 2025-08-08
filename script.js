@@ -502,9 +502,37 @@ function handleHashOnLoad() {
         const navLink = document.querySelector(`.nav-link[data-page="${hash}"]`);
         if (navLink) {
             // Longer delay to ensure all initialization is complete, especially on slower connections
-            setTimeout(() => {
+            setTimeout(async () => {
                 console.log('Triggering hash navigation for:', hash);
-                navLink.click();
+                
+                // Manually trigger the same process as nav link click
+                const overlayBody = document.getElementById('overlayBody');
+                const overlay = document.getElementById('pageOverlay');
+                
+                if (overlayBody && !overlay.classList.contains('active')) {
+                    // Load content first
+                    try {
+                        const response = await fetch(`${hash}.html`);
+                        const html = await response.text();
+                        
+                        // Extract content from the main element
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const mainContent = doc.querySelector('main');
+                        
+                        if (mainContent) {
+                            overlayBody.innerHTML = mainContent.innerHTML;
+                            // Re-initialize email obfuscation after loading new content
+                            initializeObfuscatedEmail();
+                        }
+                    } catch (error) {
+                        console.error('Error loading page content:', error);
+                        overlayBody.innerHTML = '<p>Error loading content. Please try again.</p>';
+                    }
+                    
+                    // Then trigger the nav link click
+                    navLink.click();
+                }
             }, 500);
         }
     }
