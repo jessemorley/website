@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="Book a headshot session with Jesse Morley Photography. Limited availability for professional portrait sessions.">
+    <title>Jesse Morley | Session Booking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Calendly badge widget begin -->
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+    <style>
+        /* Reset body overflow from main site styles */
+        body {
+            overflow: auto !important;
+            height: auto !important;
+        }
+
+        /* Booking Page Specific Styles */
+        .booking-page {
+            min-height: 100vh;
+            background-color: var(--color-white);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .booking-header {
+            padding: var(--space-lg) var(--space-sm);
+            text-align: center;
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        .booking-header h1 {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-black);
+        }
+
+        .booking-main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-2xl) var(--space-sm);
+            width: 100%;
+        }
+
+        .booking-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-2xl);
+            align-items: start;
+        }
+
+        .booking-image {
+            position: relative;
+            width: 80%;
+            aspect-ratio: 3 / 4;
+            overflow: hidden;
+            background-color: var(--color-background);
+        }
+
+        .booking-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.7s ease;
+        }
+
+        .image-caption {
+            margin-top: var(--space-sm);
+            text-align: center;
+            font-size: var(--font-size-small);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-text-light);
+        }
+
+        .booking-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .availability-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-text-light);
+            margin-bottom: var(--space-sm);
+        }
+
+        .booking-title {
+            font-size: var(--font-size-3xl);
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+            color: var(--color-black);
+            line-height: 1.2;
+        }
+
+        .details-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+        }
+
+        .detail-label {
+            font-size: var(--font-size-medium);
+            line-height: var(--line-height-relaxed);
+            font-weight: 600;
+            color: var(--color-black);
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            font-size: var(--font-size-large);
+            line-height: var(--line-height-relaxed);
+            color: var(--color-black);
+        }
+
+        .detail-value-note {
+            color: var(--color-text-light);
+            font-size: var(--font-size-small);
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-sm);
+        }
+
+        .booking-cta {
+            margin-top: var(--space-xl);
+        }
+
+        .cta-button {
+            display: inline-block;
+            width: 100%;
+            padding: var(--space-md) var(--space-lg);
+            background-color: var(--color-black);
+            color: var(--color-white);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-size: 0.75rem;
+            font-weight: 700;
+            transition: all var(--transition-fast);
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background-color: var(--color-text);
+        }
+
+        .booking-footer {
+            padding: var(--space-lg) var(--space-sm);
+            text-align: center;
+            border-top: 1px solid var(--color-border-light);
+        }
+
+        .booking-footer p {
+            font-size: var(--font-size-small);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-text-light);
+        }
+
+        /* Tablet and up */
+        @media (min-width: 768px) {
+            .booking-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: var(--space-2xl);
+            }
+
+            .booking-main {
+                padding: var(--space-2xl);
+            }
+
+            .cta-button {
+                width: auto;
+            }
+        }
+
+        /* Desktop */
+        @media (min-width: 1024px) {
+            .booking-header h1 {
+                font-size: var(--font-size-2xl);
+            }
+
+            .booking-title {
+                font-size: var(--font-size-4xl);
+            }
+        }
+    </style>
+</head>
+<body class="booking-page">
+
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo/jessemorley_logo_white.webp" alt="Jesse Morley">
+                </a>
+            </div>
+            <nav class="nav">
+                <a href="index.html#info" class="nav-link">Info</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="booking-main">
+        <div class="booking-grid">
+
+            <!-- Left Column: Image -->
+            <div>
+                <div class="booking-image">
+                    <img
+                        src="/images/headshots/bronte_headshot1.webp"
+                        alt="Portrait Example"
+                        loading="eager"
+                    >
+                </div>
+            </div>
+
+            <!-- Right Column: Details -->
+            <div class="booking-details">
+                <span class="availability-tag">Limited Availability</span>
+                <h2 class="booking-title">December Headshots</h2>
+
+                <div class="details-list">
+
+                    <div class="detail-item">
+                        <span class="detail-label">When</span>
+                        <span class="detail-value">Fri, Dec 12 &ndash; Sunday, Dec 14</span>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="detail-label">Where</span>
+                        <span class="detail-value">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: -1px; margin-right: 0.5rem;">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>Uno Studios, Alexandria<br>23 McCauley St<br>Alexandria
+                        </span>
+                    </div>
+
+   
+
+                    <div class="detail-item">
+                        <span class="detail-label">What to Bring</span>
+                        <span class="detail-value">One to two looks (e.g. a suit, scrubs, smart casual).</span>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="detail-label">What You Get</span>
+                        <span class="detail-value">Your choice of five retouched images in print and web resolution (3:4 and 1:1 ratios), in colour and black and white.</span>
+                    </div>
+
+                                     <div class="detail-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Cost</span>
+                            <span class="detail-value">$300</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Session Length</span>
+                            <span class="detail-value">30 Minutes</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="booking-cta">
+                    <button class="cta-button" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/jessemorley/headshot-session'});return false;">
+                        Book Your Slot
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+<!-- Calendly link widget begin -->
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+<a href="" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/jessemorley/headshot-session?hide_event_type_details=1&hide_gdpr_banner=1'});return false;"></a>
+<!-- Calendly link widget end -->
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="copyright">&copy; <span id="current-year"></span></div>
+        </div>
+    </footer>
+
+    <script>
+        // Set current year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+
+</body>
+</html>
