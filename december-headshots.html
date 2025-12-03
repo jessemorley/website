@@ -351,6 +351,13 @@
             margin-left: var(--space-1);
         }
 
+        /* Mobile padding adjustment */
+        @media (max-width: 767px) {
+            body.booking-body {
+                padding-top: 50px;
+            }
+        }
+
         /* Tablet breakpoint */
         @media (min-width: 768px) {
             .booking-card {
@@ -397,6 +404,7 @@
         @media (min-width: 1024px) {
             body.booking-body {
                 justify-content: center;
+
             }
 
             .booking-content {
