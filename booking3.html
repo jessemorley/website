@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>December Headshots Booking</title>
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Booking Page Stylesheet -->
+    <link rel="stylesheet" href="booking3.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Calendly widget -->
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+
+</head>
+<body class="booking-body">
+
+<header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo/jessemorley_logo_white.webp" alt="Jesse Morley">
+                </a>
+            </div>
+            <nav class="nav">
+                <a href="index.html#info" class="nav-link">Info</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Card Container -->
+    <div class="booking-card">
+
+        <!-- Left Column: Image Area -->
+        <div class="booking-image">
+            <img
+                src="/images/headshots/bronte_headshot1.webp"
+                alt="Professional Headshot"
+            >
+        </div>
+
+        <!-- Right Column: Content Area -->
+        <div class="booking-content">
+
+            <!-- Header Section -->
+            <div class="booking-header">
+                <span class="availability-badge">
+                    Limited Availability
+                </span>
+                <h1 class="booking-title">
+                    December Headshots
+                </h1>
+            </div>
+
+            <!-- Primary Logistics (Date & Location) -->
+            <div class="logistics-section">
+
+                <!-- Date Item -->
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i data-lucide="calendar" width="20" height="20"></i>
+                    </div>
+                    <div class="info-card-content">
+                        <h3>Fri, Dec 12 – Sun, Dec 14</h3>
+                        <p>Limited slots remaining</p>
+                    </div>
+                </div>
+
+                <!-- Location Item -->
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i data-lucide="map-pin" width="20" height="20"></i>
+                    </div>
+                    <div class="info-card-content">
+                        <h3>Uno Studios</h3>
+                        <p>23 McCauley St, Alexandria</p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- Secondary Details Grid -->
+            <div class="detail-grid">
+
+                <!-- Detail 1 -->
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i data-lucide="clock" width="18" height="18"></i>
+                    </div>
+                    <div>
+                        <dt>Session Length</dt>
+                        <dd>30 Minutes</dd>
+                    </div>
+                </div>
+
+                <!-- Detail 2 -->
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i data-lucide="credit-card" width="18" height="18"></i>
+                    </div>
+                    <div>
+                        <dt>Cost</dt>
+                        <dd>$300</dd>
+                    </div>
+                </div>
+
+                <!-- Detail 3 -->
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i data-lucide="shirt" width="18" height="18"></i>
+                    </div>
+                    <div>
+                        <dt>What to Bring</dt>
+                        <dd>One to two looks (e.g. a suit, scrubs, smart casual).</dd>
+                    </div>
+                </div>
+
+                <!-- Detail 4 -->
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i data-lucide="image" width="18" height="18"></i>
+                    </div>
+                    <div>
+                        <dt>What You Get</dt>
+                        <dd>5 retouched images in print & web resolution (color & B/W).</dd>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CTA Section -->
+            <div class="cta-section">
+                <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/jessemorley/headshot-session'});return false;" class="booking-cta">
+                    <span>Book Your Time</span>
+                    <i data-lucide="arrow-right" width="18" height="18" class="booking-cta-icon"></i>
+                </button>
+                <p class="cta-note">
+                    No payment required until the day of the shoot.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Calendly widget script -->
+    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+    <!-- Initialize Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

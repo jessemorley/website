@@ -7,6 +7,9 @@
 ehthumbs.db
 Thumbs.db
 
+# Example files
+/images/references
+
 # Editor files
 .vscode/
 .idea/
