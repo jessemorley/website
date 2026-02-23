@@ -1,0 +1,1 @@
+- [ ] Prevent logo from squashing with insufficient width
