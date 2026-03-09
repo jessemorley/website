@@ -288,6 +288,15 @@ a {
 
 .email-link:hover {
     color: var(--color-text-light);
+    cursor: none;
+}
+
+#compumail-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    display: none;
+    transform: translate(-50%, -50%);
 }
 
 
@@ -333,6 +342,15 @@ a {
 
 .social-link:hover {
     opacity: 0.8;
+    cursor: none;
+}
+
+#spinningat-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    display: none;
+    transform: translate(-50%, -50%);
 }
 
 /* Preloader */

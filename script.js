@@ -69,6 +69,9 @@ function initializePage() {
     
     // Initialize obfuscated email
     initializeObfuscatedEmail();
+
+    // Initialize Instagram cursor
+    initializeInstagramCursor();
 }
 
 // Set current year in copyright
@@ -470,7 +473,43 @@ function initializeObfuscatedEmail() {
         const parts = ['hi', 'jessemorley', 'com'];
         const email = parts[0] + '@' + parts[1] + '.' + parts[2];
         emailLink.innerHTML = '<a href="mailto:' + email + '" class="email-link">' + email + '</a>';
+        initializeEmailCursor(emailLink.querySelector('.email-link'));
     }
+}
+
+// Animated GIF cursor — reusable for any link
+function initializeGifCursor(link, cursorId, gifSrc) {
+    if (!link) return;
+    let cursor = document.getElementById(cursorId);
+    if (!cursor) {
+        cursor = document.createElement('img');
+        cursor.id = cursorId;
+        cursor.src = gifSrc;
+        document.body.appendChild(cursor);
+    }
+
+    link.addEventListener('mouseenter', () => {
+        gsap.killTweensOf(cursor);
+        cursor.style.display = 'block';
+        gsap.fromTo(cursor, { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.2, ease: 'back.out(2)' });
+    });
+    link.addEventListener('mouseleave', () => {
+        cursor.style.display = 'none';
+        gsap.set(cursor, { opacity: 0, scale: 0.3 });
+    });
+    link.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+    });
+}
+
+function initializeEmailCursor(link) {
+    initializeGifCursor(link, 'compumail-cursor', '/images/gifs/compumail.gif');
+}
+
+function initializeInstagramCursor() {
+    const link = document.querySelector('.social-link');
+    initializeGifCursor(link, 'spinningat-cursor', '/images/gifs/spinningat.gif');
 }
 
 // Logo behavior - close overlay if open, otherwise go to home
