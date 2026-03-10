@@ -1,6 +1,6 @@
 // Portfolio Images Configuration
 const portfolioImages = [
-    { file: 'portfolio-04.jpg', alt: 'Green Night Scene' },
+    { file: 'portfolio-04.webp', alt: 'Green Night Scene' },
     { file: 'portfolio-06.webp', alt: 'Fashion Portrait Mali' },
     { file: 'portfolio-02.webp', alt: 'After Still Life' },
     { file: 'portfolio-09.webp', alt: 'Still Life Items in Tray' },
