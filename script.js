@@ -95,21 +95,16 @@ function initializePreloader() {
     }
     
     const percentage = document.querySelector('.percentage');
-    const logo = document.querySelector('.preloader-logo');
     const images = document.querySelectorAll('img');
     
     let loadedCount = 0;
     let totalCount = images.length;
     
-    // Update percentage display and logo rotation
+    // Update percentage display
     function updatePercentage() {
         const percent = Math.round((loadedCount / totalCount) * 100);
         percentage.textContent = `${percent}%`;
-        
-        // Rotate logo based on loading progress (0% = 0°, 100% = 18000°)
-        const rotation = (percent / 100) * 18000;
-        logo.style.transform = `rotate(${rotation}deg)`;
-        
+
         if (loadedCount === totalCount) {
             setTimeout(() => {
                 preloader.classList.add('hidden');

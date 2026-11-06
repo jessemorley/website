@@ -392,24 +392,24 @@ a {
 .preloader-content {
     text-align: center;
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: var(--space-lg);
 }
 
 .preloader-logo {
-    width: 40px;
-    height: 40px;
-    filter: brightness(0) saturate(100%) invert(100%);
-    transition: transform 0.1s ease;
+    display: block;
+    width: 128px;
+    height: 128px;
 }
 
 .percentage {
     color: var(--color-white);
-    font-size: var(--font-size-3xl);
+    font-size: var(--font-size-base);
     font-weight: 300;
     font-family: var(--font-family);
     min-width: 120px;
-    text-align: left;
+    text-align: center;
 }
 
 /* Page Overlay */
