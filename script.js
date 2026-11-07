@@ -3,11 +3,11 @@ const portfolioImages = [
     { file: 'portfolio-04.webp', alt: 'Green Night Scene' },
     { file: 'portfolio-06.webp', alt: 'Fashion Portrait Mali' },
     { file: 'portfolio-02.webp', alt: 'After Still Life' },
-    { file: 'portfolio-09.webp', alt: 'Still Life Items in Tray' },
     { file: 'portfolio-03.webp', alt: 'After BTS' },
+    { file: 'portfolio-09.webp', alt: 'Still Life Items in Tray' },
     { file: 'portfolio-07.webp', alt: 'Fashion Portrait Mariangel' },
-    { file: 'portfolio-01.webp', alt: 'Silver Rings on Red' },
     { file: 'portfolio-08.webp', alt: 'Still Life Ring on Can' },
+    { video: 'video/portfolio-1264.mp4', alt: 'Still Life Ring on Can' },
     { file: 'portfolio-10.jpg', alt: 'Still Life Fruit and Paint' },
 ];
 
@@ -27,12 +27,20 @@ function generateGallery() {
             const imageItem = document.createElement('div');
             imageItem.className = 'image-item';
             
-            const img = document.createElement('img');
-            img.src = `./images/porfolio/${image.file}`;
-            img.alt = image.alt;
-            img.loading = 'eager';
-            
-            imageItem.appendChild(img);
+            let media;
+            if (image.video) {
+                media = document.createElement('video');
+                media.src = `./images/${encodeURI(image.video)}`;
+                media.muted = media.autoplay = media.loop = media.playsInline = true;
+                media.setAttribute('aria-label', image.alt);
+            } else {
+                media = document.createElement('img');
+                media.src = `./images/porfolio/${image.file}`;
+                media.alt = image.alt;
+                media.loading = 'eager';
+            }
+
+            imageItem.appendChild(media);
             galleryContainer.appendChild(imageItem);
         });
     }
